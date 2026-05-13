@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard | Cloud Storage{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <h1>Dashboard</h1>
+    <div class="cards">
+        <div class="card">
+            <h2>Total Files</h2>
+            <p>{{ files|length }}</p>
+        </div>
+        <div class="card">
+            <h2>Storage</h2>
+            <p>AWS S3 Connected</p>
+        </div>
+        <div class="card">
+            <h2>Database</h2>
+            <p>RDS MySQL Active</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

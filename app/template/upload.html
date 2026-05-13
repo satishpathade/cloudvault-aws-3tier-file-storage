@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Upload | Cloud Storage{% endblock %}
+
+{% block content %}
+<div class="upload-box">
+    <h1>Upload File</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <label for="file">Select File:</label>
+        <input type="file" name="file" id="file" class="input-box" required title="Select a file to upload">
+        <button type="submit" class="btn">Upload to S3</button>
+    </form>
+</div>
+{% endblock %}

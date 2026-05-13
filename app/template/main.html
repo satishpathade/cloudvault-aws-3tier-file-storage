@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Home — CloudVault{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-logo">⬡</div>
+            <h1 class="auth-title">CloudVault</h1>
+            <p class="auth-subtitle">One main page for quick access to all sections</p>
+        </div>
+
+        {% if session.user_id %}
+        <div class="auth-form">
+            <a href="{{ url_for('gallery') }}" class="btn-primary" style="justify-content:center;">Open Gallery</a>
+            <a href="{{ url_for('upload') }}" class="btn-secondary" style="justify-content:center;">Upload Files</a>
+            <a href="{{ url_for('logout') }}" class="btn-secondary" style="justify-content:center;">Logout</a>
+        </div>
+        {% else %}
+        <div class="auth-form">
+            <a href="{{ url_for('login') }}" class="btn-primary" style="justify-content:center;">Login</a>
+            <a href="{{ url_for('register') }}" class="btn-secondary" style="justify-content:center;">Create Account</a>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="auth-bg">
+        <div class="bg-orb bg-orb-1"></div>
+        <div class="bg-orb bg-orb-2"></div>
+        <div class="bg-orb bg-orb-3"></div>
+    </div>
+</div>
+{% endblock %}
