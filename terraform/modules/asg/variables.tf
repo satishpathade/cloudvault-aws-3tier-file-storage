@@ -58,6 +58,7 @@ variable "app_max_size" {
 
 variable "instance_profile_name" {
   type = string
+  
 }
 
 variable "key_name" {
