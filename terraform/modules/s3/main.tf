@@ -1,9 +1,10 @@
 resource "aws_s3_bucket" "this" {
-  bucket = "${var.project_name}-storage"
+  bucket = "${var.project_name}-file-storage"
 
-  tags = merge(var.tags, {
-    Name = "${var.project_name}-storage-bucket"
-  })
+  tags = {
+    project = var.project_name
+    Name    = "${var.project_name}-file-storage"
+  }
 }
 
 # Enable versioning
