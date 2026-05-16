@@ -1,0 +1,14 @@
+---
+- import_playbook: install-docker.yml
+- import_playbook: install_k8s.yml
+- import_playbook: install-helm.yml
+- import_playbook: install_metrics-server.yml
+- import_playbook: install-jenkins.yml
+- import_playbook: install_sonarqube.yml
+- import_playbook: install_trivy.yml
+- import_playbook: install-argocd.yml
+- import_playbook: install_prometheus.yml
+- import_playbook: install-grafana.yml
+- import_playbook: install-falco.yml
+- import_playbook: configure-web-server.yml
+- import_playbook: configure-app-server.yml
