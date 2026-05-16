@@ -1,0 +1,22 @@
+--- 
+- name: update package 
+  dnf:
+    name: "*"
+    state: latest
+
+- name: install docker
+  dnf:
+    name: docker
+    state: present
+
+- name: start docker
+  service: 
+    name: docker
+    state: startes
+    enabled: true
+
+- name: add ec2 user to docker group
+  user:
+    name: ec2-user
+    groups: docekr
+    append: yes
