@@ -1,5 +1,3 @@
-# Latest Amazon Linux 2023 AMI
-
 data "aws_ami" "amazon_linux" {
   most_recent = true
   owners      = ["amazon"]
@@ -16,14 +14,12 @@ data "aws_ami" "amazon_linux" {
 }
 
 # CI/CD Security Group
-
 resource "aws_security_group" "cicd" {
   name        = "${var.project_name}-cicd-sg"
   description = "Security group for CI/CD server"
   vpc_id      = var.vpc_id
 
-  # SSH Access
-
+  # SSH
   ingress {
     description = "SSH"
     from_port   = 22
@@ -32,8 +28,7 @@ resource "aws_security_group" "cicd" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # Jenkins Access
-
+  # Jenkins port
   ingress {
     description = "Jenkins"
 
@@ -43,8 +38,17 @@ resource "aws_security_group" "cicd" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # Outbound Internet Access
+  # SonarQube port
+  ingress {
+    description = "SonarQube"
 
+    from_port = 9000
+    to_port = 9000
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Outbound Internet
   egress {
     from_port   = 0
     to_port     = 0
@@ -60,13 +64,14 @@ resource "aws_security_group" "cicd" {
 # CI/CD EC2 Instance
 
 resource "aws_instance" "cicd_server" {
-  ami           = data.aws_ami.amazon_linux.id
-  instance_type = var.cicd_instance_type
-  key_name = var.key_name
-  subnet_id = var.public_subnet_id
-  vpc_security_group_ids = [aws_security_group.cicd.id]
-  iam_instance_profile = var.instance_profile_name
+  ami                         = data.aws_ami.amazon_linux.id
+  instance_type               = var.cicd_instance_type
+  key_name                    = var.key_name
+  subnet_id                   = var.public_subnet_id
+  vpc_security_group_ids      = [aws_security_group.cicd.id]
+  iam_instance_profile        = var.instance_profile_name
   associate_public_ip_address = true
+  
   tags = {
     Name    = "${var.project_name}-cicd-server"
     Project = var.project_name
