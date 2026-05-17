@@ -1,0 +1,16 @@
+---
+- name: Add Falco Helm repository
+  shell: |
+    helm repo add falcosecurity https://falcosecurity.github.io/charts
+
+- name: Update Helm repositories
+  shell: |
+    helm repo update
+
+- name: Create Falco namespace
+  shell: |
+    kubectl create namespace falco --dry-run=client -o yaml | kubectl apply -f -
+
+- name: Install Falco
+  shell: |
+    helm install falco falcosecurity/falco -n falco
