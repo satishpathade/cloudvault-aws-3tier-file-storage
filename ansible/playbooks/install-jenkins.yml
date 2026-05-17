@@ -1,0 +1,7 @@
+--- 
+- name: install jenkins
+  hosts: cloudvault-cicd-server
+  become: true
+
+  roles: 
+  - jenkins
