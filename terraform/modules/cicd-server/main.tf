@@ -72,6 +72,9 @@ resource "aws_instance" "cicd_server" {
   iam_instance_profile        = var.instance_profile_name
   associate_public_ip_address = true
   
+  # userdata script to install ansible
+  user_data = file("${path.module}/userdata.sh")
+
   tags = {
     Name    = "${var.project_name}-cicd-server"
     Project = var.project_name
