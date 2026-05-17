@@ -1,0 +1,7 @@
+---
+- name: Install Falco
+  hosts: cloudvault-app-server
+  become: true
+
+  roles:
+    - falco
