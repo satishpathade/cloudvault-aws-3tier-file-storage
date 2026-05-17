@@ -1,0 +1,23 @@
+---
+- name: Install Java
+  dnf:
+    name: java-17-amazon-corretto
+    state: present
+
+- name: Install Docker
+  dnf:
+    name: docker
+    state: present
+
+- name: Enable Docker
+  service:
+    name: docker
+    state: started
+    enabled: true
+
+- name: Run SonarQube container
+  shell: |
+    docker run -d \
+    --name sonarqube \
+    -p 9000:9000 \
+    sonarqube:lts-community
