@@ -7,9 +7,12 @@ filters:
   tag:Project: cloudvault
   instance-state-name: running
 
-# Groups servers by ASG name
+hostnames:
+  - private-ip-address
+
+# Group by Name tag
 keyed_groups:
-  - key: tags.aws_autoscaling_groupName
+  - key: tags.Name
     prefix: ""
     separator: ""
 
@@ -17,5 +20,5 @@ compose:
   ansible_host: private_ip_address
 
 vars:
-  ansible_user: ec2-user          # Amazon Linux uses ec2-user
+  ansible_user: ec2-user
   ansible_ssh_private_key_file: ~/.ssh/cloudvault-cicd.pem
