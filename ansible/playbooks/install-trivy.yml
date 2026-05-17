@@ -1,0 +1,7 @@
+---
+- name: install trivy
+  hosts: cloudvault-cicd-server
+  become: true
+
+  roles:
+  - trivy 
