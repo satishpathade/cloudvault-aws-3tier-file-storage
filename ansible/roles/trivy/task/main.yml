@@ -1,0 +1,15 @@
+---
+- name: Install Trivy repository
+  shell: |
+    cat <<EOF > /etc/yum.repos.d/trivy.repo
+    [trivy]
+    name=Trivy repository
+    baseurl=https://aquasecurity.github.io/trivy-repo/rpm/releases/\$basearch/
+    gpgcheck=0
+    enabled=1
+    EOF
+
+- name: Install Trivy
+  dnf:
+    name: trivy
+    state: present
