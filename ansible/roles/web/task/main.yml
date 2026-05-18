@@ -1,0 +1,15 @@
+---
+- name: Install Nginx
+  dnf:
+    name: nginx
+    state: present
+
+- name: Enable Nginx
+  service:
+    name: nginx
+    enabled: true
+
+- name: Start Nginx
+  service:
+    name: nginx
+    state: started

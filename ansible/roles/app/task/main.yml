@@ -1,0 +1,10 @@
+---
+- name: Install Python
+  dnf:
+    name: python3
+    state: present
+
+- name: Install Git
+  dnf:
+    name: git
+    state: present
