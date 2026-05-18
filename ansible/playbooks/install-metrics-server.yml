@@ -1,6 +1,6 @@
 ---
 - name: install metrics server
-  hosts: cloudvault-cicd-server
+  hosts: cloudvault-app-server
   become: true
 
   roles: 
