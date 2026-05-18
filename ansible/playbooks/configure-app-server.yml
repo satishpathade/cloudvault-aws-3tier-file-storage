@@ -1,0 +1,7 @@
+---
+- name: Configure App Server
+  hosts: cloudvault-app-server
+  become: true
+
+  roles:
+    - app

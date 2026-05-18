@@ -1,0 +1,7 @@
+---
+- name: Configure Web Server
+  hosts: cloudvault-web-server
+  become: true
+
+  roles:
+    - web
