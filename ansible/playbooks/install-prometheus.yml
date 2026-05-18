@@ -1,0 +1,7 @@
+---
+- name: Install Prometheus
+  hosts: cloudvault-app-server
+  become: true
+
+  roles:
+    - prometheus
