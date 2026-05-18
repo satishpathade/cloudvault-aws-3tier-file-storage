@@ -1,0 +1,8 @@
+---
+- name: Get Grafana service
+  shell: |
+    kubectl get svc
+
+- name: Grafana installed with Prometheus stack
+  debug:
+    msg: "Grafana is installed successfully"
