@@ -10,15 +10,9 @@ filters:
 hostnames:
   - private-ip-address
 
-# Group by Name tag
 keyed_groups:
   - key: tags.Name
     prefix: ""
-    separator: ""
 
 compose:
   ansible_host: private_ip_address
-
-vars:
-  ansible_user: ec2-user
-  ansible_ssh_private_key_file: ~/.ssh/cloudvault-cicd.pem
