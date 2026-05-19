@@ -1,7 +1,0 @@
----
-- name: install argocd on k8s cluster
-  hosts: cloudvault-app-server
-  become: true
-
-  roles:
-  - argocd

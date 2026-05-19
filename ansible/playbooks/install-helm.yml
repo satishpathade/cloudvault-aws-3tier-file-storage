@@ -1,7 +1,0 @@
----
-- name: install helm
-  hosts: cloudvault-cicd-server
-  become: true
-
-  roles:
-    - helm
