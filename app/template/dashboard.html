@@ -1,22 +1,38 @@
 {% extends 'base.html' %}
-{% block title %}Dashboard | Cloud Storage{% endblock %}
+{% block title %}Dashboard | CloudVault{% endblock %}
 
 {% block content %}
 <div class="dashboard">
-    <h1>Dashboard</h1>
+
+    <h1>Cloud Storage Dashboard</h1>
+
     <div class="cards">
+
         <div class="card">
             <h2>Total Files</h2>
             <p>{{ files|length }}</p>
         </div>
+
         <div class="card">
-            <h2>Storage</h2>
-            <p>AWS S3 Connected</p>
+            <h2>Storage Status</h2>
+            <p>☁ AWS S3</p>
         </div>
+
         <div class="card">
             <h2>Database</h2>
-            <p>RDS MySQL Active</p>
+            <p>🟢 Active</p>
         </div>
+
     </div>
+
+    <div class="dashboard-overview">
+        <h3>System Overview</h3>
+        <p>
+            CloudVault is connected with AWS S3 for secure file storage
+            and MySQL RDS for metadata management. Upload, manage and
+            access your files securely from anywhere.
+        </p>
+    </div>
+
 </div>
 {% endblock %}
