@@ -1,38 +1,267 @@
 {% extends 'base.html' %}
-{% block title %}Dashboard | CloudVault{% endblock %}
+
+{% block title %}
+CloudVault Dashboard
+{% endblock %}
 
 {% block content %}
-<div class="dashboard">
 
-    <h1>Cloud Storage Dashboard</h1>
+<section class="hero">
 
-    <div class="cards">
+    <div class="hero-content">
 
-        <div class="card">
-            <h2>Total Files</h2>
-            <p>{{ files|length }}</p>
-        </div>
+        <h1>CloudVault Dashboard</h1>
 
-        <div class="card">
-            <h2>Storage Status</h2>
-            <p>☁ AWS S3</p>
-        </div>
-
-        <div class="card">
-            <h2>Database</h2>
-            <p>🟢 Active</p>
-        </div>
-
-    </div>
-
-    <div class="dashboard-overview">
-        <h3>System Overview</h3>
         <p>
-            CloudVault is connected with AWS S3 for secure file storage
-            and MySQL RDS for metadata management. Upload, manage and
-            access your files securely from anywhere.
+            Upload, manage, preview and download files
+            securely using AWS S3 storage.
         </p>
+
     </div>
+
+</section>
+
+<section class="cards">
+
+    <div class="card">
+        <h2>Total Files</h2>
+        <p>{{ files|length }}</p>
+    </div>
+
+    <div class="card">
+        <h2>Storage</h2>
+        <p>AWS S3</p>
+    </div>
+
+    <div class="card">
+        <h2>Database</h2>
+        <p>SQLite</p>
+    </div>
+
+    <div class="card">
+        <h2>Status</h2>
+        <p>Online</p>
+    </div>
+
+</section>
+
+<section class="upload-section">
+
+    <div class="upload-box">
+
+        <h2>Upload File</h2>
+
+        <form
+            method="POST"
+            action="{{ url_for('upload') }}"
+            enctype="multipart/form-data">
+
+            <input
+                type="file"
+                name="file"
+                class="input-box"
+                required>
+
+            <button
+                type="submit"
+                class="btn">
+
+                Upload File
+
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+<section class="search-section">
+
+    <input
+        type="text"
+        id="searchInput"
+        class="search-box"
+        placeholder="Search files...">
+
+</section>
+
+<section class="gallery-section">
+
+    <div class="section-header">
+
+        <h2>File Gallery</h2>
+
+    </div>
+
+    {% if files %}
+
+    <div class="file-grid">
+
+        {% for file in files %}
+
+        <div class="file-card">
+
+            <div class="file-image">
+
+                <img
+                    src="{{ file.file_url }}"
+                    alt="{{ file.filename }}"
+                    onclick="openPreview('{{ file.file_url }}')">
+
+            </div>
+
+            <div class="file-info">
+
+                <h3>
+                    {{ file.filename }}
+                </h3>
+
+                <div class="file-actions">
+
+                    <a
+                        href="{{ file.file_url }}"
+                        target="_blank"
+                        class="btn-view">
+
+                        View
+
+                    </a>
+
+                    <a
+                        href="{{ file.file_url }}"
+                        download
+                        class="btn-download">
+
+                        Download
+
+                    </a>
+
+                    <form
+                        method="POST"
+                        action="{{ url_for('delete_file', file_id=file.id) }}">
+
+                        <button
+                            type="submit"
+                            class="btn-delete">
+
+                            Delete
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="empty-gallery">
+
+        <h2>No Files Uploaded</h2>
+
+        <p>
+            Upload your first file to start using CloudVault.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+</section>
+
+<section class="system-info">
+
+    <div class="card">
+
+        <h2>System Overview</h2>
+
+        <p>
+            CloudVault uses Flask, AWS S3,
+            SQLAlchemy and SQLite for secure
+            cloud file storage.
+        </p>
+
+    </div>
+
+</section>
+
+<div
+    id="previewModal"
+    class="preview-modal">
+
+    <span
+        class="close-preview"
+        onclick="closePreview()">
+
+        &times;
+
+    </span>
+
+    <img
+        id="previewImage"
+        class="preview-image">
 
 </div>
+
+<script>
+
+function openPreview(url){
+
+    document
+    .getElementById("previewImage")
+    .src = url;
+
+    document
+    .getElementById("previewModal")
+    .style.display = "flex";
+}
+
+function closePreview(){
+
+    document
+    .getElementById("previewModal")
+    .style.display = "none";
+}
+
+const searchInput =
+document.getElementById("searchInput");
+
+if(searchInput){
+
+    searchInput.addEventListener(
+        "keyup",
+        function(){
+
+            const value =
+            this.value.toLowerCase();
+
+            document
+            .querySelectorAll(".file-card")
+            .forEach(card => {
+
+                const text =
+                card.innerText.toLowerCase();
+
+                card.style.display =
+                text.includes(value)
+                ? "block"
+                : "none";
+
+            });
+
+        }
+    );
+
+}
+
+</script>
+
 {% endblock %}
