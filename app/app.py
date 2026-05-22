@@ -1,141 +1,232 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import (
+    Flask,
+    render_template,
+    request,
+    redirect,
+    url_for,
+    flash
+)
+
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
+
 import boto3
 import os
+
 from datetime import datetime
 
+# Env
+
 load_dotenv()
+
+# App
 
 app = Flask(
     __name__,
     template_folder="template",
-    static_folder="static",
-    static_url_path="/static"
+    static_folder="static"
 )
-app.secret_key = os.getenv("SECRET_KEY", "dev-secret-key")
 
-DB_USERNAME = os.getenv("DB_USERNAME")
-DB_PASSWORD = os.getenv("DB_PASSWORD")
-DB_HOST = os.getenv("DB_HOST")
-DB_NAME = os.getenv("DB_NAME")
+app.secret_key = os.getenv(
+    "SECRET_KEY",
+    "cloudvault-secret"
+)
+
+# DB
 
 app.config["SQLALCHEMY_DATABASE_URI"] = (
-    f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
+    "sqlite:///cloudvault.db"
 )
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-# Database
-
 db = SQLAlchemy(app)
 
-# AWS S3
+# S3
+
+AWS_REGION = os.getenv("AWS_REGION")
+S3_BUCKET = os.getenv("S3_BUCKET")
 
 s3 = boto3.client(
     "s3",
-    aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
-    aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
-    region_name=os.getenv("AWS_REGION")
+    aws_access_key_id=os.getenv(
+        "AWS_ACCESS_KEY_ID"
+    ),
+    aws_secret_access_key=os.getenv(
+        "AWS_SECRET_ACCESS_KEY"
+    ),
+    region_name=AWS_REGION
 )
 
-S3_BUCKET = os.getenv("S3_BUCKET")
-
-
-# Database Model
+# Model
 
 class File(db.Model):
+
     __tablename__ = "files"
 
-    id = db.Column(db.Integer, primary_key=True)
-    filename = db.Column(db.String(255), nullable=False)
-    file_url = db.Column(db.String(500), nullable=False)
-    uploaded_at = db.Column(db.DateTime, default=datetime.utcnow)
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
 
+    filename = db.Column(
+        db.String(255),
+        nullable=False
+    )
 
-# Home Page
+    file_url = db.Column(
+        db.String(500),
+        nullable=False
+    )
 
-@app.route('/')
+    uploaded_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow
+    )
+
+# Home
+
+@app.route("/")
 def home():
-    return render_template('index.html')
 
+    return render_template(
+        "index.html"
+    )
 
 # Dashboard
 
-@app.route('/dashboard')
+@app.route("/dashboard")
 def dashboard():
-    files = File.query.order_by(File.uploaded_at.desc()).all()
-    return render_template('dashboard.html', files=files)
 
+    files = File.query.order_by(
+        File.uploaded_at.desc()
+    ).all()
 
-# Upload File
+    return render_template(
+        "main.html",
+        files=files
+    )
 
-@app.route('/upload', methods=['GET', 'POST'])
+# Upload
+
+@app.route(
+    "/upload",
+    methods=["POST"]
+)
 def upload():
-    if request.method == 'POST':
 
-        if 'file' not in request.files:
-            flash('No file selected')
-            return redirect(request.url)
+    file = request.files.get(
+        "file"
+    )
 
-        file = request.files['file']
+    if not file:
 
-        if file.filename == '':
-            flash('Please select a file')
-            return redirect(request.url)
+        flash(
+            "Please select a file"
+        )
 
-        try:
-            filename = secure_filename(file.filename)
+        return redirect(
+            url_for("dashboard")
+        )
 
-            # Upload to S3
-            s3.upload_fileobj(
-                file,
-                S3_BUCKET,
-                filename,
-                ExtraArgs={"ACL": "public-read"}
-            )
+    try:
 
-            file_url = (
-                f"https://{S3_BUCKET}.s3.amazonaws.com/{filename}"
-            )
+        filename = secure_filename(
+            file.filename
+        )
 
-            # Save metadata to RDS
-            new_file = File(
+        s3.upload_fileobj(
+            file,
+            S3_BUCKET,
+            filename
+        )
+
+        file_url = (
+            f"https://{S3_BUCKET}"
+            f".s3.{AWS_REGION}"
+            f".amazonaws.com/{filename}"
+        )
+
+        new_file = File(
             filename=filename,
             file_url=file_url
-            )
+        )
 
-            db.session.add(new_file)
-            db.session.commit()
+        db.session.add(
+            new_file
+        )
 
-            flash('File uploaded successfully')
-            return redirect(url_for('dashboard'))
+        db.session.commit()
 
-        except Exception as error:
-            flash(f'Upload failed: {error}')
-            return redirect(request.url)
+        flash(
+            "File uploaded successfully"
+        )
 
-    return render_template('upload.html')
+    except Exception as e:
 
+        flash(
+            f"Upload failed: {e}"
+        )
 
-# Gallery Page
+    return redirect(
+        url_for("dashboard")
+    )
 
-@app.route('/gallery')
-def gallery():
-    files = File.query.order_by(File.uploaded_at.desc()).all()
-    return render_template('gallery.html', files=files)
+# Delete
 
+@app.route(
+    "/delete/<int:file_id>",
+    methods=["POST"]
+)
+def delete_file(file_id):
 
-# Settings Page
+    file = File.query.get_or_404(
+        file_id
+    )
 
-@app.route('/settings')
-def settings():
-    return render_template('setting.html')
+    try:
 
+        s3.delete_object(
+            Bucket=S3_BUCKET,
+            Key=file.filename
+        )
 
-if __name__ == '__main__':
+    except Exception:
+        pass
+
+    db.session.delete(
+        file
+    )
+
+    db.session.commit()
+
+    flash(
+        "File deleted successfully"
+    )
+
+    return redirect(
+        url_for("dashboard")
+    )
+
+# Health
+
+@app.route("/health")
+def health():
+
+    return {
+        "status": "healthy"
+    }
+
+# Start
+
+if __name__ == "__main__":
+
     with app.app_context():
         db.create_all()
 
-    app.run(debug=True)
+    app.run(
+        host="0.0.0.0",
+        port=5000,
+        debug=True
+    )
