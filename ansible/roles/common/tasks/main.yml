@@ -1,0 +1,14 @@
+---
+- name: update packages
+  dnf:
+    name: "*"
+    state: latest
+
+- name: install packages
+  dnf:
+    name:
+      - git
+      - unzip
+      - pyhon3
+    state: present
+
