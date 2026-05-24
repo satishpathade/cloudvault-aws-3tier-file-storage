@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | CloudVault</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+
+        <div class="logo">
+            <i class="fa-solid fa-cloud"></i>
+            <span>CloudVault</span>
+        </div>
+
+        <ul class="nav-links">
+            <li>
+                <a href="{{ url_for('home') }}">Home</a>
+            </li>
+
+            <li>
+                <a class="active" href="{{ url_for('dashboard') }}">
+                    Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('upload_page') }}">
+                    Upload
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('gallery') }}">
+                    Gallery
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Header -->
+
+    <section class="page-header">
+
+        <h1>
+            Dashboard
+        </h1>
+
+        <p>
+            Monitor your Amazon S3 storage and uploaded files.
+        </p>
+
+    </section>
+
+    <!-- Statistics -->
+
+    <section class="stats-container">
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                <i class="fa-solid fa-folder"></i>
+            </div>
+
+            <div class="stat-info">
+                <h3>Total Files</h3>
+                <h2>{{ total_files }}</h2>
+            </div>
+
+        </div>
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                <i class="fa-solid fa-hard-drive"></i>
+            </div>
+
+            <div class="stat-info">
+                <h3>Storage Used</h3>
+                <h2>{{ storage_used }} MB</h2>
+            </div>
+
+        </div>
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                <i class="fa-solid fa-cloud"></i>
+            </div>
+
+            <div class="stat-info">
+                <h3>Status</h3>
+                <h2>Connected</h2>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Recent Files -->
+
+    <section class="recent-files">
+
+        <div class="section-title">
+            <h2>Recent Uploads</h2>
+        </div>
+        
+        {% if recent_files %}
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>File Name</th>
+                        <th>Size (KB)</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for file in recent_files %}
+                    <tr>
+                        <td>
+                            {{ file.key }}
+                        </td>
+
+                        <td>
+                            {{ file.size }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+
+        <div class="empty-state">
+
+            <i class="fa-solid fa-folder-open"></i>
+
+            <h3>No Files Found</h3>
+
+            <p>
+                Upload your first file to Amazon S3.
+            </p>
+
+            <a class="btn-primary" href="{{ url_for('upload_page') }}">
+                Upload File
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+    <!-- Quick Actions -->
+
+    <section class="quick-actions">
+
+        <a href="{{ url_for('upload_page') }}" class="action-card">
+
+            <i class="fa-solid fa-upload"></i>
+
+            <h3>Upload Files</h3>
+
+            <p>
+                Upload new files to your S3 bucket.
+            </p>
+
+        </a>
+
+        <a href="{{ url_for('gallery') }}" class="action-card">
+
+            <i class="fa-solid fa-images"></i>
+
+            <h3>Open Gallery</h3>
+
+            <p>
+                View and manage uploaded files.
+            </p>
+
+        </a>
+
+    </section>
+
+</body>
+
+</html>

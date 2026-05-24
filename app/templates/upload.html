@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Files | CloudVault</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+
+        <div class="logo">
+            <i class="fa-solid fa-cloud"></i>
+            <span>CloudVault</span>
+        </div>
+
+        <ul class="nav-links">
+
+            <li>
+                <a href="{{ url_for('home') }}">
+                    Home
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('dashboard') }}">
+                    Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a class="active"
+                   href="{{ url_for('upload_page') }}">
+                    Upload
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('gallery') }}">
+                    Gallery
+                </a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+    <!-- Header -->
+
+    <section class="page-header">
+
+        <h1>Upload Files</h1>
+
+        <p>
+            Upload files securely to your Amazon S3 bucket.
+        </p>
+
+    </section>
+
+    <!-- Upload Container -->
+
+    <section class="upload-section">
+
+        <div class="upload-card">
+
+            <div id="dropArea"
+                 class="drop-area">
+
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                <h2>Drag & Drop Files Here</h2>
+
+                <p>
+                    or click below to choose files
+                </p>
+
+                <input
+                    type="file"
+                    id="fileInput"
+                    hidden
+                >
+
+                <button
+                    type="button"
+                    id="chooseBtn"
+                    class="btn-primary">
+
+                    Choose File
+
+                </button>
+
+            </div>
+
+            <div id="selectedFile"
+                 class="selected-file">
+
+            </div>
+
+            <div id="progressContainer"
+                 class="progress-container">
+
+                <div id="progressBar"
+                     class="progress-bar">
+
+                </div>
+
+            </div>
+
+            <button
+                id="uploadBtn"
+                class="btn-upload">
+
+                <i class="fa-solid fa-upload"></i>
+
+                Upload File
+
+            </button>
+
+            <div id="message"
+                 class="message-box">
+
+            </div>
+
+        </div>
+
+    </section>
+
+<script>
+
+const fileInput = document.getElementById("fileInput");
+const chooseBtn = document.getElementById("chooseBtn");
+const uploadBtn = document.getElementById("uploadBtn");
+const selectedFile = document.getElementById("selectedFile");
+
+const progressContainer =
+document.getElementById("progressContainer");
+
+const progressBar =
+document.getElementById("progressBar");
+
+const message =
+document.getElementById("message");
+
+const dropArea =
+document.getElementById("dropArea");
+
+let selected = null;
+
+
+/* Open File Picker */
+
+chooseBtn.addEventListener("click", () => {
+    fileInput.click();
+});
+
+
+/* File Selected */
+
+fileInput.addEventListener("change", () => {
+
+    selected = fileInput.files[0];
+
+    if(selected){
+
+        selectedFile.innerHTML = `
+            <strong>Selected:</strong>
+            ${selected.name}
+        `;
+
+    }
+
+});
+
+
+/* Drag Events */
+
+dropArea.addEventListener("dragover", (e) => {
+
+    e.preventDefault();
+
+    dropArea.classList.add("drag-active");
+
+});
+
+
+dropArea.addEventListener("dragleave", () => {
+
+    dropArea.classList.remove("drag-active");
+
+});
+
+
+dropArea.addEventListener("drop", (e) => {
+
+    e.preventDefault();
+
+    dropArea.classList.remove("drag-active");
+
+    selected = e.dataTransfer.files[0];
+
+    if(selected){
+
+        selectedFile.innerHTML = `
+            <strong>Selected:</strong>
+            ${selected.name}
+        `;
+
+    }
+
+});
+
+
+/* Upload File */
+
+uploadBtn.addEventListener("click", () => {
+
+    if(!selected){
+
+        showMessage(
+            "Please select a file first",
+            false
+        );
+
+        return;
+
+    }
+
+    const formData = new FormData();
+
+    formData.append(
+        "file",
+        selected
+    );
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.open(
+        "POST",
+        "/upload-file",
+        true
+    );
+
+    progressContainer.style.display = "block";
+
+    xhr.upload.addEventListener(
+        "progress",
+        (event) => {
+
+            if(event.lengthComputable){
+
+                const percent =
+                    (event.loaded / event.total) * 100;
+
+                progressBar.style.width =
+                    percent + "%";
+
+            }
+
+        }
+    );
+
+    xhr.onload = function(){
+
+        try{
+
+            const response =
+                JSON.parse(xhr.responseText);
+
+            if(response.success){
+
+                showMessage(
+                    response.message,
+                    true
+                );
+
+                progressBar.style.width =
+                    "100%";
+
+            }else{
+
+                showMessage(
+                    response.message,
+                    false
+                );
+
+            }
+
+        }catch(error){
+
+            showMessage(
+                "Upload failed",
+                false
+            );
+
+        }
+
+    };
+
+    xhr.send(formData);
+
+});
+
+
+function showMessage(text, success){
+
+    message.textContent = text;
+
+    if(success){
+
+        message.className =
+            "message-box success";
+
+    }else{
+
+        message.className =
+            "message-box error";
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>

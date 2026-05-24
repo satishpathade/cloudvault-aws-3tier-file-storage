@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudVault | Secure AWS S3 File Storage</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-cloud"></i>
+            <span>CloudVault</span>
+        </div>
+
+        <ul class="nav-links">
+            <li>
+                <a href="{{ url_for('home') }}">Home</a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('upload_page') }}">Upload</a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('gallery') }}">Gallery</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>
+                Store, Manage and Access
+                Files Securely in AWS S3
+            </h1>
+
+            <p>
+                CloudVault is a modern cloud storage platform
+                powered by Flask and Amazon S3. Upload, manage,
+                download and organize files from a beautiful
+                dashboard.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a
+                    href="{{ url_for('upload_page') }}"
+                    class="btn btn-primary"
+                >
+                    <i class="fa-solid fa-upload"></i>
+                    Upload Files
+                </a>
+
+                <a
+                    href="{{ url_for('gallery') }}"
+                    class="btn btn-secondary"
+                >
+                    <i class="fa-solid fa-images"></i>
+                    View Gallery
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+
+        <h2>Core Features</h2>
+
+        <div class="feature-grid">
+
+            <div class="feature-card">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                <h3>Fast Uploads</h3>
+
+                <p>
+                    Upload files directly to Amazon S3 with
+                    a clean and responsive interface.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <i class="fa-solid fa-folder-open"></i>
+
+                <h3>Gallery View</h3>
+
+                <p>
+                    Browse uploaded files using a responsive
+                    gallery layout.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <i class="fa-solid fa-download"></i>
+
+                <h3>Instant Download</h3>
+
+                <p>
+                    Download files securely using generated
+                    S3 links.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <i class="fa-solid fa-trash"></i>
+
+                <h3>Delete Files</h3>
+
+                <p>
+                    Remove unwanted files from your storage
+                    instantly.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Quick Navigation -->
+    <section class="quick-links">
+
+        <h2>Quick Access</h2>
+
+        <div class="quick-grid">
+
+            <a
+                href="{{ url_for('dashboard') }}"
+                class="quick-card"
+            >
+                <i class="fa-solid fa-chart-simple"></i>
+
+                <h3>Dashboard</h3>
+
+                <p>
+                    View storage statistics and recent files.
+                </p>
+            </a>
+
+            <a
+                href="{{ url_for('upload_page') }}"
+                class="quick-card"
+            >
+                <i class="fa-solid fa-file-arrow-up"></i>
+
+                <h3>Upload</h3>
+
+                <p>
+                    Upload new files to your S3 bucket.
+                </p>
+            </a>
+
+            <a
+                href="{{ url_for('gallery') }}"
+                class="quick-card"
+            >
+                <i class="fa-solid fa-image"></i>
+                <h3>Gallery</h3>
+                <p>
+                    Manage, download and delete files.
+                </p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>
+            © 2026 CloudVault | AWS S3 File Storage Platform
+        </p>
+    </footer>
+
+</body>
+</html>
