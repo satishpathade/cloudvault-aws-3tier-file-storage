@@ -10,6 +10,10 @@ variable "web_sg_id" {
   type = string
 }
 
+variable "cicd_sg_id" {
+  type = string
+}
+
 variable "tags" {
   type = map(string)
 }
