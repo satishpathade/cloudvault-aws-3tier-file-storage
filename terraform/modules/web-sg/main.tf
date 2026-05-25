@@ -34,6 +34,13 @@ resource "aws_security_group" "web" {
   description = "Web ASG Security Group"
   vpc_id      = var.vpc_id
 
+   ingress {
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    security_groups = [var.cicd_sg_id]
+  }
+  
   ingress {
     from_port       = 80
     to_port         = 80
