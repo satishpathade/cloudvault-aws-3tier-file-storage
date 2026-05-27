@@ -1,3 +1,5 @@
+#public alb sg
+
 resource "aws_security_group" "public_alb" {
   name        = "${var.project_name}-public-alb-sg"
   description = "Public ALB Security Group"
@@ -29,6 +31,7 @@ resource "aws_security_group" "public_alb" {
   })
 }
 
+# web sg
 resource "aws_security_group" "web" {
   name        = "${var.project_name}-web-sg"
   description = "Web ASG Security Group"
