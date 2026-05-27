@@ -1,6 +1,5 @@
 module "vpc" {
   source = "./modules/vpc"
-
   project_name        = var.project_name
   vpc_cidr            = var.vpc_cidr
   azs                 = var.azs
@@ -13,7 +12,6 @@ module "vpc" {
 
 module "security_groups" {
   source = "./modules/security-groups"
-
   project_name = var.project_name
   vpc_id       = module.vpc.vpc_id
   tags         = var.tags
@@ -21,14 +19,12 @@ module "security_groups" {
 
 module "iam" {
   source = "./modules/iam"
-
   project_name = var.project_name
   tags         = var.tags
 }
 
 module "public_alb" {
   source = "./modules/public-alb"
-
   project_name      = var.project_name
   vpc_id            = module.vpc.vpc_id
   public_subnet_ids = module.vpc.public_subnet_ids
@@ -38,7 +34,6 @@ module "public_alb" {
 
 module "internal_alb" {
   source = "./modules/internal-alb"
-
   project_name = var.project_name
   vpc_id       = module.vpc.vpc_id
   subnet_ids   = module.vpc.web_subnet_ids
@@ -48,7 +43,6 @@ module "internal_alb" {
 
 module "asg" {
   source = "./modules/asg"
-
   project_name = var.project_name
   tags         = var.tags
 
@@ -85,7 +79,6 @@ module "cicd_server" {
 
 module "rds" {
   source = "./modules/rds"
-
   project_name = var.project_name
 
   db_subnet_ids = module.vpc.db_subnet_ids
@@ -95,22 +88,18 @@ module "rds" {
   db_username       = var.db_username
   db_password       = var.db_password
   db_instance_class = var.db_instance_class
-
   tags = var.tags
 }
 
 module "s3" {
   source = "./modules/s3"
-
   project_name = var.project_name
   tags         = var.tags
 }
 
 module "cloudfront" {
   source = "./modules/cloudfront"
-
   project_name    = var.project_name
   origin_dns_name = module.public_alb.alb_dns_name
-
   tags = var.tags
 }
