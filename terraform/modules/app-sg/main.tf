@@ -1,3 +1,4 @@
+# internal alb sg
 resource "aws_security_group" "internal_alb" {
   name        = "${var.project_name}-internal-alb-sg"
   description = "Internal ALB Security Group"
@@ -34,6 +35,7 @@ resource "aws_security_group" "internal_alb" {
   tags = var.tags
 }
 
+# app sg
 resource "aws_security_group" "app" {
   name        = "${var.project_name}-app-sg"
   description = "App Security Group"
@@ -59,10 +61,10 @@ resource "aws_security_group" "app" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
   tags = var.tags
 }
 
+# RDS sg
 resource "aws_security_group" "rds" {
   name        = "${var.project_name}-rds-sg"
   description = "RDS Security Group"
@@ -81,6 +83,5 @@ resource "aws_security_group" "rds" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
   tags = var.tags
 }
