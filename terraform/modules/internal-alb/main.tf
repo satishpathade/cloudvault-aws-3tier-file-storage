@@ -2,10 +2,8 @@ resource "aws_lb" "this" {
   name               = "${var.project_name}-int-alb"
   internal           = true
   load_balancer_type = "application"
-
   security_groups = [var.alb_sg_id]
   subnets         = var.subnet_ids
-
   tags = var.tags
 }
 
@@ -13,7 +11,6 @@ resource "aws_lb_target_group" "app_tg" {
   name     = "${var.project_name}-app-tg"
   port     = 80
   protocol = "HTTP"
-
   vpc_id = var.vpc_id
 
   health_check {
