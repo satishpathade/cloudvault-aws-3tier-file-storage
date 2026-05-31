@@ -7,9 +7,7 @@ resource "aws_db_subnet_group" "this" {
 
 resource "aws_db_instance" "this" {
   identifier = "${var.project_name}-db"
-
   allocated_storage = 20
-
   engine         = "mysql"
   engine_version = "8.0"
 
@@ -21,12 +19,9 @@ resource "aws_db_instance" "this" {
 
   db_subnet_group_name   = aws_db_subnet_group.this.name
   vpc_security_group_ids = [var.rds_sg_id]
-
   multi_az            = true
   publicly_accessible = false
-
   skip_final_snapshot = true
   storage_encrypted   = true
-
   tags = var.tags
 }
