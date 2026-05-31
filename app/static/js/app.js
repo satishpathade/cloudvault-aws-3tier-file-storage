@@ -1,7 +1,4 @@
-// ================================================
-// CloudVault — main.js
 // Features: Drag & Drop, File Preview, Upload Progress
-// ================================================
 
 document.addEventListener('DOMContentLoaded', () => {
 
