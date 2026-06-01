@@ -59,3 +59,28 @@ resource "aws_iam_instance_profile" "ec2_profile" {
 
   tags = var.tags
 }
+
+# S3 Access for Ansible 
+
+resource "aws_iam_role_policy" "s3_key_access" {
+  name = "${var.project_name}-s3-key-access"
+  role = aws_iam_role.ec2_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+
+    Statement = [
+      {
+        Effect = "Allow"
+
+        Action = [
+          "s3:GetObject"
+        ]
+
+        Resource = [
+          "arn:aws:s3:::${var.project_name}-file-storage/cloudvault-cicd.pem"
+        ]
+      }
+    ]
+  })
+}
