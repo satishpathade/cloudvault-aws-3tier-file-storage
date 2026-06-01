@@ -6,6 +6,6 @@
 terraform.tfvars
 terraform.tfvars.json
 .terraform.lock.hcl
-
+terraform/keys/*.pem
 .env
 .vscode/
