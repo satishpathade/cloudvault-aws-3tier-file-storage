@@ -97,6 +97,12 @@ module "s3" {
   tags         = var.tags
 }
 
+resource "aws_s3_object" "ansible_key" {
+  bucket = module.s3.bucket_name
+  key    = "cloudvault-cicd.pem"
+  source = "${path.module}/keys/cloudvault-cicd.pem"
+}
+
 module "cloudfront" {
   source = "./modules/cloudfront"
   project_name    = var.project_name
