@@ -13,3 +13,7 @@ output "cicd_private_ip" {
 output "cicd_security_group_id" {
   value = aws_security_group.cicd.id
 }
+
+output "cicd_sg_id" {
+  value = aws_security_group.cicd.id
+}
