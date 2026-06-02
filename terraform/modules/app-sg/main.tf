@@ -11,13 +11,6 @@ resource "aws_security_group" "internal_alb" {
     security_groups = [var.web_sg_id]
   }
 
-  ingress {
-    from_port       = 443
-    to_port         = 443
-    protocol        = "tcp"
-    security_groups = [var.web_sg_id]
-  }
-
   egress {
     from_port   = 0
     to_port     = 0
@@ -42,15 +35,8 @@ resource "aws_security_group" "app" {
   }
   
   ingress {
-    from_port       = 80
-    to_port         = 80
-    protocol        = "tcp"
-    security_groups = [aws_security_group.internal_alb.id]
-  }
-
-  ingress {
-    from_port       = 443
-    to_port         = 443
+    from_port       = 5000
+    to_port         = 5000
     protocol        = "tcp"
     security_groups = [aws_security_group.internal_alb.id]
   }
