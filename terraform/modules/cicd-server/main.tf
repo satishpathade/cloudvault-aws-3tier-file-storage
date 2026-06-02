@@ -48,6 +48,24 @@ resource "aws_security_group" "cicd" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # k8s API port
+  ingress {
+    description = "kubernetes API"
+    from_port = 6443
+    to_port = 6443
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  } 
+
+  # kubelet port
+  ingress {
+    description = "kubelet"
+    from_port = 10250
+    to_port =10250
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   # Outbound Internet
   egress {
     from_port   = 0
