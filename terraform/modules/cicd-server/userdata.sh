@@ -8,6 +8,8 @@ sudo dnf install ansible -y
 pip3 install boto3 botocore
 ansible-galaxy collection install amazon.aws
 
+git clone https://github.com/satishpathade/cloudvault-aws-3tier-devsecops.git
+
 mkdir -p /home/ec2-user/.ssh
 
 aws s3 cp \
