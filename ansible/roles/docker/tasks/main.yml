@@ -12,11 +12,11 @@
 - name: start docker
   service: 
     name: docker
-    state: startes
+    state: started
     enabled: true
 
 - name: add ec2 user to docker group
   user:
     name: ec2-user
-    groups: docekr
+    groups: docker
     append: yes
