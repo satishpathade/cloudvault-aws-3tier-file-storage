@@ -1,6 +1,6 @@
 ---
 - name: Install Grafana
-  hosts: cloudvault-web-server
+  hosts: web
   become: true
 
   roles:

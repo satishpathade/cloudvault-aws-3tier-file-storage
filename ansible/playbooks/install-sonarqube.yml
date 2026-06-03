@@ -1,6 +1,6 @@
 ---
 - name: install sonarqube
-  hosts: cloudvault-cicd-server
+  hosts: cicd
   become: true
 
   roles:
