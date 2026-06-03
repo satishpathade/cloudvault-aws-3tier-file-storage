@@ -10,9 +10,10 @@ filters:
 hostnames:
   - private-ip-address
 
-keyed_groups:
-  - key: tags.Name
-    prefix: ""
+groups:
+  cicd: tags.Name == 'cloudvault-cicd-server'
+  web: tags.Name == 'cloudvault-web-server'
+  app: tags.Name == 'cloudvault-app-server'
 
 compose:
   ansible_host: private_ip_address
