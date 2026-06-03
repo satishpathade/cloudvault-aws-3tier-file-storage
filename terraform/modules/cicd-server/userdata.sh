@@ -20,10 +20,4 @@ s3://cloudvault-file-storage/cloudvault-cicd.pem \
 
 chmod 400 /home/ec2-user/.ssh/cloudvault-cicd.pem
 
-chown ec2-user:ec2-user \
-/home/ec2-user/.ssh/cloudvault-cicd.pem
-
-# ec2 permissions
- chown -R ec2-user:ec2-user /home/ec2-user/cloudvault-aws-3tier-devsecops
-
- chmod -R 755 ~/cloudvault-aws-3tier-devsecops
+chmod -R 755 /home/ec2-user/cloudvault-aws-3tier-devsecops
