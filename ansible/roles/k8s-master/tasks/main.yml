@@ -20,6 +20,15 @@
     owner: ec2-user
     group: ec2-user
 
+- name: Wait for Kubernetes API
+  shell: kubectl get nodes
+  environment:
+    KUBECONFIG: /home/ec2-user/.kube/config
+  register: kubectl_ready
+  retries: 30
+  delay: 10
+  until: kubectl_ready.rc == 0
+
 - name: Install Flannel CNI
   shell: |
     kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
