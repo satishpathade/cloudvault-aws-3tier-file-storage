@@ -20,14 +20,15 @@
     owner: ec2-user
     group: ec2-user
 
-- name: Wait for Kubernetes API
+- name: Wait for Kubernetes API Server
   shell: kubectl get nodes
   environment:
     KUBECONFIG: /home/ec2-user/.kube/config
-  register: kubectl_ready
+  register: k8s_ready
   retries: 30
   delay: 10
-  until: kubectl_ready.rc == 0
+  until: k8s_ready.rc == 0
+  changed_when: false
 
 - name: Install Flannel CNI
   shell: |
