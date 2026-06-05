@@ -1,9 +1,5 @@
 ---
-- name: Copy join command from master
-  fetch:
-    src: /tmp/kube_join_command.sh
-    dest: /tmp/kube_join_command.sh
-    flat: yes
-
 - name: Join worker node to cluster
-  shell: sh /tmp/kube_join_command.sh
+  shell: "{{ hostvars[groups['cicd'][0]].join_command.stdout }}"
+  args:
+    creates: /etc/kubernetes/kubelet.conf
