@@ -1,14 +1,20 @@
 ---
 - import_playbook: common.yml
 - import_playbook: install-docker.yml
+
 - import_playbook: install-k8s.yml
 - import_playbook: configure-k8s-cluster.yml
+- import_playbook: k8s-worker.yml
+
 - import_playbook: install-metrics-server.yml
+
 - import_playbook: install-jenkins.yml
 - import_playbook: install-sonarqube.yml
 - import_playbook: install-trivy.yml
+
 - import_playbook: install-prometheus.yml
 - import_playbook: install-grafana.yml
 - import_playbook: install-falco.yml
+
 - import_playbook: configure-web-server.yml
 - import_playbook: configure-app-server.yml
