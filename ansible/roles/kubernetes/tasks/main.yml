@@ -26,7 +26,7 @@
       - kubeadm
       - kubectl
     state: present
-    disable_excludes: kubernetes
+    disable_excludes: all
 
 - name: Enable kubelet
   service:
@@ -37,4 +37,3 @@
   service:
     name: kubelet
     state: started
-    
