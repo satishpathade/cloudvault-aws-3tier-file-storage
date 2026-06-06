@@ -18,5 +18,6 @@ aws s3 cp \
 s3://cloudvault-file-storage/cloudvault-cicd.pem \
 /home/ec2-user/.ssh/cloudvault-cicd.pem
 
-chmod 400 /home/ec2-user/.ssh/cloudvault-cicd.pem
-chmod -R 755 /home/ec2-user/cloudvault-aws-3tier-devsecops
+sudo chown ec2-user:ec2-user /home/ec2-user/.ssh/cloudvault-cicd.pem
+sudo chmod 400 /home/ec2-user/.ssh/cloudvault-cicd.pem
+sudo chmod 755 /home/ec2-user/cloudvault-aws-3tier-devsecops/ansible
