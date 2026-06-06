@@ -1,7 +1,0 @@
----
-- name: Install Falco
-  hosts: app
-  become: true
-
-  roles:
-    - falco
