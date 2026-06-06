@@ -1,12 +1,8 @@
 ---
-- name: Add Prometheus Helm repository
+- name: Run Prometheus container
   shell: |
-    helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-
-- name: Update Helm repositories
-  shell: |
-    helm repo update
-
-- name: Install Prometheus stack
-  shell: |
-    helm install prometheus prometheus-community/kube-prometheus-stack
+    docker run -d \
+      --name prometheus \
+      --restart unless-stopped \
+      -p 9090:9090 \
+      prom/prometheus
