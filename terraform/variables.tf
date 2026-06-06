@@ -40,7 +40,7 @@ variable "db_subnet_cidrs" {
 
 variable "cicd_instance_type" {
   type    = string
-  default = "t3.small"
+  default = "c7i-flex.large"
 }
 
 variable "web_instance_type" {
