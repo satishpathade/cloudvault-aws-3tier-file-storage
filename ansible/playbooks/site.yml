@@ -14,7 +14,6 @@
 
 - import_playbook: install-prometheus.yml
 - import_playbook: install-grafana.yml
-- import_playbook: install-falco.yml
 
 - import_playbook: configure-web-server.yml
 - import_playbook: configure-app-server.yml
