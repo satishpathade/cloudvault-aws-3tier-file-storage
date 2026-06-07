@@ -10,7 +10,7 @@
     state: directory
     owner: ec2-user
     group: ec2-user
-    mode: "0755"
+    mode: '0755'
 
 - name: Copy admin.conf to ec2-user kubeconfig location
   copy:
@@ -19,19 +19,16 @@
     remote_src: true
     owner: ec2-user
     group: ec2-user
-    mode: "0600"
+    mode: '0600'
 
-- name: Wait securely for Kubernetes API Server readiness
-  uri:
-    url: https://127.0.0
-    validate_certs: false
-  register: api_health
-  until: api_health.status == 200
-  retries: 30
-  delay: 10
+- name: Wait for local Kubernetes admin configuration file readiness
+  ansible.builtin.wait_for:
+    path: /etc/kubernetes/admin.conf
+    state: present
+    timeout: 60
 
 - name: Deploy Flannel CNI network plugin
-  shell: kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+  shell: kubectl apply -f https://github.com
   environment:
     KUBECONFIG: /etc/kubernetes/admin.conf
   changed_when: true
@@ -45,7 +42,7 @@
   copy:
     content: "{{ join_command.stdout }}"
     dest: /tmp/kube_join_command.sh
-    mode: "0755"
+    mode: '0755'
 
 - name: Fetch cluster join command to Ansible control machine
   fetch:
