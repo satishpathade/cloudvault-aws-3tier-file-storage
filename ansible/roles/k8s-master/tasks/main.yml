@@ -1,7 +1,6 @@
 ---
 - name: Initialize Kubernetes Master
-  shell: |
-    kubeadm init --pod-network-cidr=10.244.0.0/16
+  shell: kubeadm init --pod-network-cidr=10.244.0.0/16
   args:
     creates: /etc/kubernetes/admin.conf
 
@@ -44,3 +43,9 @@
   copy:
     content: "{{ join_command.stdout }}"
     dest: /tmp/kube_join_command.sh
+
+- name: Fetch join command to controller
+  fetch:
+    src: /tmp/kube_join_command.sh
+    dest: /tmp/
+    flat: yes
