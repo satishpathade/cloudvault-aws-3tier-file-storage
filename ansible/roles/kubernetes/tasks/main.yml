@@ -30,7 +30,7 @@
     name: containerd
     state: present
 
-- name: Create containerd directory
+- name: Create containerd config directory
   file:
     path: /etc/containerd
     state: directory
@@ -50,7 +50,7 @@
   service:
     name: containerd
     state: started
-    enabled: yes
+    enabled: true
 
 - name: Add Kubernetes repository
   copy:
@@ -72,8 +72,8 @@
     state: present
     disable_excludes: all
 
-- name: Enable kubelet
+- name: Enable and start kubelet
   service:
     name: kubelet
     state: started
-    enabled: yes
+    enabled: true
