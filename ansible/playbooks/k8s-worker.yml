@@ -1,0 +1,7 @@
+---
+- name: install kubernetes worker nodes
+  hosts: web:app
+  become: true
+
+  roles:
+    - k8s-worker
