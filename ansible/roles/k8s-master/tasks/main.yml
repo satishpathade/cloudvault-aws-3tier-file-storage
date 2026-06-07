@@ -10,7 +10,6 @@
     state: directory
     owner: ec2-user
     group: ec2-user
-    mode: '0755'
 
 - name: Copy admin.conf
   copy:
@@ -19,7 +18,6 @@
     remote_src: true
     owner: ec2-user
     group: ec2-user
-    mode: '0600'
 
 - name: Wait for Kubernetes API Server
   shell: |
@@ -37,16 +35,6 @@
     kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
   environment:
     KUBECONFIG: /home/ec2-user/.kube/config
-
-- name: Wait for node registration
-  shell: kubectl get nodes
-  environment:
-    KUBECONFIG: /home/ec2-user/.kube/config
-  register: node_ready
-  retries: 30
-  delay: 10
-  until: node_ready.rc == 0
-  changed_when: false
 
 - name: Generate join command
   shell: kubeadm token create --print-join-command
