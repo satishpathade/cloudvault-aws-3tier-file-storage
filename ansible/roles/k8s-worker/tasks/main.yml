@@ -1,5 +1,11 @@
 ---
+- name: Copy join command to worker
+  copy:
+    src: /tmp/kube_join_command.sh
+    dest: /tmp/kube_join_command.sh
+    mode: '0755'
+
 - name: Join worker node to cluster
-  shell: "{{ hostvars[groups['cicd'][0]].join_command.stdout }}"
+  shell: sh /tmp/kube_join_command.sh
   args:
     creates: /etc/kubernetes/kubelet.conf
