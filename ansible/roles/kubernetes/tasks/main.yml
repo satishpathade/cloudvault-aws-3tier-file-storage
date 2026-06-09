@@ -82,10 +82,10 @@
     content: |
       [kubernetes]
       name=Kubernetes
-      baseurl=https://k8s.io
+      baseurl=https://pkgs.k8s.io/core:/stable:/v1.30/rpm/
       enabled=1
       gpgcheck=1
-      gpgkey=https://k8s.iorepodata/repomd.xml.key
+      gpgkey=https://pkgs.k8s.io/core:/stable:/v1.30/rpm/repodata/repomd.xml.key
     mode: '0644'
 
 - name: Install Kubernetes core packages (kubelet, kubeadm, kubectl)
