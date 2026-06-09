@@ -21,11 +21,15 @@
     group: ec2-user
     mode: '0600'
 
-- name: Wait for local Kubernetes admin configuration file readiness
-  ansible.builtin.wait_for:
-    path: /etc/kubernetes/admin.conf
-    state: present
-    timeout: 60
+- name: Wait for Kubernetes API
+  shell: kubectl get nodes
+  environment:
+    KUBECONFIG: /home/ec2-user/.kube/config
+  register: api_ready
+  retries: 30
+  delay: 10
+  until: api_ready.rc == 0
+  changed_when: false
 
 - name: Install Flannel CNI
   shell: |
