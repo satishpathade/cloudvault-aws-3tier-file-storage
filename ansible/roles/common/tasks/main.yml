@@ -1,5 +1,12 @@
 ---
-- nam: updtae dnf
+- name: updtae dnf
   dnf:
     name: "*"
     state: latest
+
+- name: install common packages
+  dnf:
+    name:
+      - git
+      - vim
+    state: present
