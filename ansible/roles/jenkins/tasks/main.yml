@@ -1,7 +1,7 @@
 ---
 - name: Install Java
   dnf:
-    name: java-17-amazon-corretto
+    name: java-21-amazon-corretto
     state: present
 
 - name: Add Jenkins repository
