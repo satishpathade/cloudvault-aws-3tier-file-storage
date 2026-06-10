@@ -1,0 +1,5 @@
+---
+- nam: updtae dnf
+  dnf:
+    name: "*"
+    state: latest
