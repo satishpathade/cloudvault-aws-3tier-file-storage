@@ -11,9 +11,6 @@ pipeline {
                 checkout scm
             }
         }
-    }
-
-    stages {
         stage ('build docker image') {
             steps {
                 sh '''
@@ -21,9 +18,6 @@ pipeline {
                 '''
             }
         }
-    }
-
-    stages {
         stage ('push docker image') {
             steps {
                 withCredentials([
@@ -40,14 +34,14 @@ pipeline {
                 }
             }
         }
-    }
 
-    post {
-        success {
-            echo 'Docker image built and pushed successfully.'
-        }
-        failure {
-            echo 'Failed to build or push the Docker image.'
+        post {
+            success {
+                echo 'Docker image built and pushed successfully.'
+            }
+            failure {
+                echo 'Failed to build or push the Docker image.'
+            }
         }
     }
 }
