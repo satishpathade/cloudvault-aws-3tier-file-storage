@@ -24,3 +24,17 @@
     name: jenkins
     state: started
     enabled: true
+
+- name: add ec2-user in jenkins group
+  user:
+    name: jenkins
+    groups:
+      - ec2-user
+      - docker
+    append: yes
+
+- name: jenkins sudo privileges
+  copy:
+    dest: /etc/sudoers.d/jenkins
+    mode: '0440'
+    content: "jenkins ALL=(ALL:ALL) NOPASSWD: ALL"
