@@ -8,6 +8,8 @@ ansible-galaxy collection install amazon.aws
 cd /home/ec2-user
 sudo -u ec2-user git clone https://github.com/satishpathade/cloudvault-aws-3tier-devsecops.git
 
+sudo xfs_growfs -d /
+
 mkdir -p /home/ec2-user/.ssh
 
 aws s3 cp \

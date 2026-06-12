@@ -93,6 +93,12 @@ resource "aws_instance" "cicd_server" {
   # userdata script to install ansible
   user_data = file("${path.module}/userdata.sh")
 
+  # change root volume
+  root_block_device {
+    volume_size = 30
+    volume_type = "gp3"
+  }
+
   tags = {
     Name    = "${var.project_name}-cicd-server"
     Project = var.project_name
