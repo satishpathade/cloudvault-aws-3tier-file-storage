@@ -58,11 +58,10 @@
     creates: /etc/containerd/config.toml
 
 - name: Configure SystemdCgroup driver for containerd cleanly
-  ansible.builtin.lineinfile:
+  replace:
     path: /etc/containerd/config.toml
-    regexp: '^\s*SystemdCgroup\s*=\s*(true|false)'
-    line: '            SystemdCgroup = true'
-    insertafter: '\[plugins\."io\.containerd\.grpc\.v1\.cri"\.containerd\.runtimes\.runc\.options\]'
+    regexp: 'SystemdCgroup = false'
+    replace: 'SystemdCgroup = true'
 
 - name: Restart and enable containerd service
   service:
@@ -82,10 +81,10 @@
     content: |
       [kubernetes]
       name=Kubernetes
-      baseurl=https://pkgs.k8s.io/core:/stable:/v1.30/rpm/
+      baseurl=https://k8s.io
       enabled=1
       gpgcheck=1
-      gpgkey=https://pkgs.k8s.io/core:/stable:/v1.30/rpm/repodata/repomd.xml.key
+      gpgkey=https://k8s.iorepodata/repomd.xml.key
     mode: '0644'
 
 - name: Install Kubernetes core packages (kubelet, kubeadm, kubectl)
