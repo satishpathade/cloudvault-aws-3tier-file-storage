@@ -33,7 +33,7 @@
 
 - name: Install Flannel CNI
   shell: |
-    kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+    kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
   environment:
     KUBECONFIG: /home/ec2-user/.kube/config
   changed_when: true
@@ -43,14 +43,12 @@
   register: join_command
   changed_when: false
 
-- name: Copy join command to worker
-  copy:
-    content: "{{ join_command.stdout }}\n"
-    dest: /tmp/kube_join_command.sh
-    mode: '0755'
+- name: Save join command
+  set_fact:
+    kube_join_cmd: "{{ join_command.stdout }}"
 
-- name: Join worker node to cluster
-  fetch:
-    src: /tmp/kube_join_command.sh
+- name: Write join command to file
+  copy:
     dest: /tmp/kube_join_command.sh
-    flat: true
+    content: "{{ kube_join_cmd }}"
+    mode: '0755'
