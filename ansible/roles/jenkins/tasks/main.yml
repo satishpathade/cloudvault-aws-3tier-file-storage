@@ -33,7 +33,7 @@
       - docker
     append: yes
 
-- name: jenkins sudo privileges
+- name: jenkins sudo privilege
   copy:
     dest: /etc/sudoers 
     mode: '0440'
