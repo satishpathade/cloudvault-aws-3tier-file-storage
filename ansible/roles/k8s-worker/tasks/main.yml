@@ -1,11 +1,12 @@
 ---
-- name: Copy join command to worker
-  copy:
-    src: /tmp/kube_join_command.sh
-    dest: /tmp/kube_join_command.sh
-    mode: '0755'
+- name: Read join command from master
+  delegate_to: "{{ groups['cicd'][0] }}"
+  shell: cat /tmp/kube_join_command.sh
+  register: join_cmd
+  changed_when: false
 
-- name: Join worker node to cluster
-  shell: sh /tmp/kube_join_command.sh
+- name: Join worker node
+  become: true
+  shell: "{{ join_cmd.stdout }}"
   args:
     creates: /etc/kubernetes/kubelet.conf
