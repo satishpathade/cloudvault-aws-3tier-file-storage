@@ -1,9 +1,12 @@
---- 
-- name: install metrics server
-  shell: | 
-    kubectl apply -f  https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-
-- name: pathch metrics server
+---
+- name: Install Metrics Server
   shell: |
-    kubectl patch deployment metrics- server -n kube-system --type='jsion' -p='[{"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"--kubelet-insecure-tls"}]'
-    
+    kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+  environment:
+    KUBECONFIG: /home/ec2-user/.kube/config
+
+- name: Patch Metrics Server
+  shell: |
+    kubectl patch deployment metrics-server -n kube-system --type='json' -p='[{"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"--kubelet-insecure-tls"}]'
+  environment:
+    KUBECONFIG: /home/ec2-user/.kube/config
