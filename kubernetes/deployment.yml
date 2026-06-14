@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudvault-app
+  namespace: cloudvault
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cloudvault-app
+  template:
+    metadata:
+      labels:
+        app: cloudvault-app
+    spec:
+      containers:
+        - name: cloudvault-app
+          image: satishpathade/cloudvault-app:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+          envFrom:
+            - configMapRef:
+                name: cloudvault-config
+            - secretRef:
+                name: cloudvault-secret
