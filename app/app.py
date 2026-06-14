@@ -3,14 +3,29 @@ from dotenv import load_dotenv
 import boto3
 import os
 from botocore.exceptions import ClientError
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
-USE_MOCK_DATA = True
+USE_MOCK_DATA = False
 
 load_dotenv()
 app = Flask(__name__)
 
+# Database Configuration
+DB_USERNAME = os.getenv("DB_USERNAME")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_HOST = os.getenv("DB_HOST")
+DB_NAME = os.getenv("DB_NAME")
+
+app.config["SQLALCHEMY_DATABASE_URI"] = (
+    f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
+)
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+db = SQLAlchemy(app)
+
 AWS_REGION = os.getenv("AWS_REGION")
-BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
+BUCKET_NAME = os.getenv("S3_BUCKET")
 
 print("Region:", AWS_REGION)
 print("Bucket Name:", BUCKET_NAME)
@@ -21,6 +36,15 @@ s3 = boto3.client(
     aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
     aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY")
 )
+
+class File(db.Model):
+    __tablename__ = "files"
+
+    id = db.Column(db.Integer, primary_key=True)
+    filename = db.Column(db.String(255), nullable=False)
+    file_url = db.Column(db.String(500), nullable=False)
+    uploaded_at = db.Column(db.DateTime, default=datetime.utcnow)
+
 # Helper Functions
 
 def get_all_files():
@@ -82,11 +106,13 @@ def dashboard():
             recent_files=[]
         )
 
-    files = get_all_files()
+    files = File.query.order_by(
+        File.uploaded_at.desc()
+    ).all()
 
     return render_template(
         "dashboard.html",
-        total_files=len(files),
+        total_files=File.query.count(),
         storage_used=get_storage_used(),
         recent_files=files[:5]
     )
@@ -96,8 +122,6 @@ def dashboard():
 def upload_page():
     return render_template("upload.html")
 
-
-from datetime import datetime
 
 @app.route("/gallery")
 def gallery():
@@ -121,14 +145,16 @@ def gallery():
             files=files
         )
 
-    files = get_all_files()
+    files = File.query.order_by(
+        File.uploaded_at.desc()
+    ).all()
 
     return render_template(
         "gallery.html",
         files=files
     )
 
-# Upload File
+# --- 3. Update Upload Route ---
 
 @app.route("/upload-file", methods=["POST"])
 def upload_file():
@@ -149,11 +175,24 @@ def upload_file():
 
     try:
 
+        # Upload to S3
         s3.upload_fileobj(
             file,
             BUCKET_NAME,
             file.filename
         )
+
+        file_url = (
+            f"https://{BUCKET_NAME}.s3.amazonaws.com/{file.filename}"
+        )
+
+        new_file = File(
+            filename=file.filename,
+            file_url=file_url
+        )
+
+        db.session.add(new_file)
+        db.session.commit()
 
         return jsonify({
             "success": True,
@@ -175,10 +214,20 @@ def delete_file(file_key):
 
     try:
 
+        # Delete from S3
         s3.delete_object(
             Bucket=BUCKET_NAME,
             Key=file_key
         )
+
+        # Delete metadata from MySQL
+        file_record = File.query.filter_by(
+            filename=file_key
+        ).first()
+
+        if file_record:
+            db.session.delete(file_record)
+            db.session.commit()
 
         return jsonify({
             "success": True,
@@ -223,8 +272,11 @@ def api_files():
         get_all_files()
     )
 
-# Run Application
 if __name__ == "__main__":
+
+    with app.app_context():
+        db.create_all()
+
     app.run(
         debug=True,
         host="0.0.0.0",
