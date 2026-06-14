@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloudvault-config
+  namespace: cloudvault
+data:
+  DB_HOST: "cloudvault-db.cjmyauyayakc.ap-south-1.rds.amazonaws.com"
+  DB_NAME: "cloudvaultdb"
+  AWS_REGION: "ap-south-1"
+  S3_BUCKET: "cloudvault-file-storage"
