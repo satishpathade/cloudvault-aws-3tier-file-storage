@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Files | CloudVault</title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
+
 <body>
 
     <!-- Navbar -->
@@ -36,8 +36,7 @@
             </li>
 
             <li>
-                <a class="active"
-                   href="{{ url_for('upload_page') }}">
+                <a class="active" href="{{ url_for('upload_page') }}">
                     Upload
                 </a>
             </li>
@@ -70,8 +69,7 @@
 
         <div class="upload-card">
 
-            <div id="dropArea"
-                 class="drop-area">
+            <div id="dropArea" class="drop-area">
 
                 <i class="fa-solid fa-cloud-arrow-up"></i>
 
@@ -81,16 +79,9 @@
                     or click below to choose files
                 </p>
 
-                <input
-                    type="file"
-                    id="fileInput"
-                    hidden
-                >
+                <input type="file" id="fileInput" hidden>
 
-                <button
-                    type="button"
-                    id="chooseBtn"
-                    class="btn-primary">
+                <button type="button" id="chooseBtn" class="btn-primary">
 
                     Choose File
 
@@ -98,24 +89,19 @@
 
             </div>
 
-            <div id="selectedFile"
-                 class="selected-file">
+            <div id="selectedFile" class="selected-file">
 
             </div>
 
-            <div id="progressContainer"
-                 class="progress-container">
+            <div id="progressContainer" class="progress-container">
 
-                <div id="progressBar"
-                     class="progress-bar">
+                <div id="progressBar" class="progress-bar">
 
                 </div>
 
             </div>
 
-            <button
-                id="uploadBtn"
-                class="btn-upload">
+            <button id="uploadBtn" class="btn-upload">
 
                 <i class="fa-solid fa-upload"></i>
 
@@ -123,8 +109,7 @@
 
             </button>
 
-            <div id="message"
-                 class="message-box">
+            <div id="message" class="message-box">
 
             </div>
 
@@ -132,201 +117,202 @@
 
     </section>
 
-<script>
+    <script>
 
-const fileInput = document.getElementById("fileInput");
-const chooseBtn = document.getElementById("chooseBtn");
-const uploadBtn = document.getElementById("uploadBtn");
-const selectedFile = document.getElementById("selectedFile");
+        const fileInput = document.getElementById("fileInput");
+        const chooseBtn = document.getElementById("chooseBtn");
+        const uploadBtn = document.getElementById("uploadBtn");
+        const selectedFile = document.getElementById("selectedFile");
 
-const progressContainer =
-document.getElementById("progressContainer");
+        const progressContainer =
+            document.getElementById("progressContainer");
 
-const progressBar =
-document.getElementById("progressBar");
+        const progressBar =
+            document.getElementById("progressBar");
 
-const message =
-document.getElementById("message");
+        const message =
+            document.getElementById("message");
 
-const dropArea =
-document.getElementById("dropArea");
+        const dropArea =
+            document.getElementById("dropArea");
 
-let selected = null;
-
-
-/* Open File Picker */
-
-chooseBtn.addEventListener("click", () => {
-    fileInput.click();
-});
+        let selected = null;
 
 
-/* File Selected */
+        /* Open File Picker */
 
-fileInput.addEventListener("change", () => {
+        chooseBtn.addEventListener("click", () => {
+            fileInput.click();
+        });
 
-    selected = fileInput.files[0];
 
-    if(selected){
+        /* File Selected */
 
-        selectedFile.innerHTML = `
+        fileInput.addEventListener("change", () => {
+
+            selected = fileInput.files[0];
+
+            if (selected) {
+
+                selectedFile.innerHTML = `
             <strong>Selected:</strong>
             ${selected.name}
         `;
-
-    }
-
-});
-
-
-/* Drag Events */
-
-dropArea.addEventListener("dragover", (e) => {
-
-    e.preventDefault();
-
-    dropArea.classList.add("drag-active");
-
-});
-
-
-dropArea.addEventListener("dragleave", () => {
-
-    dropArea.classList.remove("drag-active");
-
-});
-
-
-dropArea.addEventListener("drop", (e) => {
-
-    e.preventDefault();
-
-    dropArea.classList.remove("drag-active");
-
-    selected = e.dataTransfer.files[0];
-
-    if(selected){
-
-        selectedFile.innerHTML = `
-            <strong>Selected:</strong>
-            ${selected.name}
-        `;
-
-    }
-
-});
-
-
-/* Upload File */
-
-uploadBtn.addEventListener("click", () => {
-
-    if(!selected){
-
-        showMessage(
-            "Please select a file first",
-            false
-        );
-
-        return;
-
-    }
-
-    const formData = new FormData();
-
-    formData.append(
-        "file",
-        selected
-    );
-
-    const xhr = new XMLHttpRequest();
-
-    xhr.open(
-        "POST",
-        "/upload-file",
-        true
-    );
-
-    progressContainer.style.display = "block";
-
-    xhr.upload.addEventListener(
-        "progress",
-        (event) => {
-
-            if(event.lengthComputable){
-
-                const percent =
-                    (event.loaded / event.total) * 100;
-
-                progressBar.style.width =
-                    percent + "%";
 
             }
 
-        }
-    );
+        });
 
-    xhr.onload = function(){
 
-        try{
+        /* Drag Events */
 
-            const response =
-                JSON.parse(xhr.responseText);
+        dropArea.addEventListener("dragover", (e) => {
 
-            if(response.success){
+            e.preventDefault();
+
+            dropArea.classList.add("drag-active");
+
+        });
+
+
+        dropArea.addEventListener("dragleave", () => {
+
+            dropArea.classList.remove("drag-active");
+
+        });
+
+
+        dropArea.addEventListener("drop", (e) => {
+
+            e.preventDefault();
+
+            dropArea.classList.remove("drag-active");
+
+            selected = e.dataTransfer.files[0];
+
+            if (selected) {
+
+                selectedFile.innerHTML = `
+            <strong>Selected:</strong>
+            ${selected.name}
+        `;
+
+            }
+
+        });
+
+
+        /* Upload File */
+
+        uploadBtn.addEventListener("click", () => {
+
+            if (!selected) {
 
                 showMessage(
-                    response.message,
-                    true
-                );
-
-                progressBar.style.width =
-                    "100%";
-
-            }else{
-
-                showMessage(
-                    response.message,
+                    "Please select a file first",
                     false
                 );
 
+                return;
+
             }
 
-        }catch(error){
+            const formData = new FormData();
 
-            showMessage(
-                "Upload failed",
-                false
+            formData.append(
+                "file",
+                selected
             );
+
+            const xhr = new XMLHttpRequest();
+
+            xhr.open(
+                "POST",
+                "/upload-file",
+                true
+            );
+
+            progressContainer.style.display = "block";
+
+            xhr.upload.addEventListener(
+                "progress",
+                (event) => {
+
+                    if (event.lengthComputable) {
+
+                        const percent =
+                            (event.loaded / event.total) * 100;
+
+                        progressBar.style.width =
+                            percent + "%";
+
+                    }
+
+                }
+            );
+
+            xhr.onload = function () {
+
+                try {
+
+                    const response =
+                        JSON.parse(xhr.responseText);
+
+                    if (response.success) {
+
+                        showMessage(
+                            response.message,
+                            true
+                        );
+
+                        progressBar.style.width =
+                            "100%";
+
+                    } else {
+
+                        showMessage(
+                            response.message,
+                            false
+                        );
+
+                    }
+
+                } catch (error) {
+
+                    showMessage(
+                        "Upload failed",
+                        false
+                    );
+
+                }
+
+            };
+
+            xhr.send(formData);
+
+        });
+
+
+        function showMessage(text, success) {
+
+            message.textContent = text;
+
+            if (success) {
+
+                message.className =
+                    "message-box success";
+
+            } else {
+
+                message.className =
+                    "message-box error";
+
+            }
 
         }
 
-    };
-
-    xhr.send(formData);
-
-});
-
-
-function showMessage(text, success){
-
-    message.textContent = text;
-
-    if(success){
-
-        message.className =
-            "message-box success";
-
-    }else{
-
-        message.className =
-            "message-box error";
-
-    }
-
-}
-
-</script>
+    </script>
 
 </body>
+
 </html>
