@@ -35,6 +35,6 @@
 
 - name: jenkins sudo privilege
   copy:
-    dest: /etc/sudoers 
+    dest: /etc/sudoers.d/jenkins
+    content: "jenkins ALL=(ALL) NOPASSWD: ALL"
     mode: '0440'
-    content: "jenkins ALL=(ALL:ALL) NOPASSWD: ALL"
