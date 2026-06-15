@@ -41,10 +41,18 @@ resource "aws_security_group" "cicd" {
   # SonarQube port
   ingress {
     description = "SonarQube"
-
     from_port = 9000
     to_port = 9000
     protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # MySQL port for RDS access
+  ingress {
+    description = "MySQL"
+    from_port = 3306
+    to_port = 3306
+    protocol= "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
