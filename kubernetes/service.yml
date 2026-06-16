@@ -6,9 +6,9 @@ metadata:
 spec:
   selector:
     app: cloudvault-app
-    ports:
-      - protocol: TCP
-        port: 5000
-        targetPort: 5000
-        
-    type: nodePort
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+      nodePort: 30080
+  type: NodePort
