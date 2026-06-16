@@ -65,6 +65,15 @@ resource "aws_security_group" "cicd" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # BGP port
+  ingress {
+    description = "BGP"
+    from_port = 179
+    to_port = 179
+    protocol = "tcp"
+    cidr_blocks = ["10.0.0.0/16"]
+  }
+
   # Outbound Internet
   egress {
     from_port   = 0
