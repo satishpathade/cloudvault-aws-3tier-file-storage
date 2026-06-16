@@ -54,11 +54,8 @@ variable "app_max_size" {
   type = number
 }
 
-# Common
-
 variable "instance_profile_name" {
   type = string
-  
 }
 
 variable "key_name" {
@@ -67,4 +64,8 @@ variable "key_name" {
 
 variable "tags" {
   type = map(string)
+}
+
+variable "web_tg_arn" {
+  type        = string
 }

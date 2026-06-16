@@ -50,6 +50,8 @@ resource "aws_autoscaling_group" "web" {
 
   vpc_zone_identifier = var.web_subnet_ids
 
+  target_group_arns = [var.web_tg_arn]
+
   launch_template {
     id      = aws_launch_template.web.id
     version = "$Latest"
@@ -104,6 +106,8 @@ resource "aws_autoscaling_group" "app" {
   force_delete     = true
 
   vpc_zone_identifier = var.app_subnet_ids
+
+  target_group_arns = [var.web_tg_arn]
 
   launch_template {
     id      = aws_launch_template.app.id
