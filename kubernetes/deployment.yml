@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: cloudvault-app
-          image: satishpathade/cloudvault-app:latest
+          image: satishpathade/cloudvaultapp:v1
           imagePullPolicy: Always
           ports:
             - containerPort: 5000
