@@ -27,11 +27,6 @@ resource "aws_lb_target_group" "web_tg" {
   tags = var.tags
 }
 
-resource "aws_lb_target_group_attachment" "web" {
-  target_group_arn = aws_lb_target_group.web_tg.arn
-  target_id        = var.web_instance_id
-  port             = 30080
-}
 
 resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_lb.this.arn
