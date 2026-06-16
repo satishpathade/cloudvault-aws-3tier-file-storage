@@ -36,8 +36,8 @@ resource "aws_security_group" "web" {
   }
 
   ingress {
-    from_port       = 80
-    to_port         = 80
+    from_port       = 30080
+    to_port         = 30080
     protocol        = "tcp"
     security_groups = [aws_security_group.public_alb.id]
   }
@@ -97,10 +97,10 @@ resource "aws_security_group" "app" {
   }
 
   ingress {
-    from_port       = 5000
-    to_port         = 5000
+    from_port       = 30080
+    to_port         = 30080
     protocol        = "tcp"
-    security_groups = [aws_security_group.internal_alb.id]
+    security_groups = [aws_security_group.public_alb]
   }
 
   # BGP port
