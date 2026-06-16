@@ -42,6 +42,14 @@ resource "aws_security_group" "web" {
     security_groups = [aws_security_group.public_alb.id]
   }
 
+  # BGP port
+  ingress {
+    from_port = 179
+    to_port = 179
+    protocol = "tcp"
+    cidr_blocks = ["10.0.0.0/16"]
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -93,6 +101,14 @@ resource "aws_security_group" "app" {
     to_port         = 5000
     protocol        = "tcp"
     security_groups = [aws_security_group.internal_alb.id]
+  }
+
+  # BGP port
+  ingress {
+    from_port = 179
+    to_port = 179
+    protocol = "tcp"
+    cidr_blocks = ["10.0.0.0/16"]
   }
 
   egress {
