@@ -30,6 +30,8 @@ module "public_alb" {
   vpc_id            = module.vpc.vpc_id
   public_subnet_ids = module.vpc.public_subnet_ids
   alb_sg_id         = module.security_groups.public_alb_sg_id
+  web_instance_id   = module.asg.web_instance_id
+  app_instance_id   = module.asg.app_instance_id
   tags              = var.tags
 }
 
@@ -66,6 +68,8 @@ module "asg" {
 
   key_name              = var.key_name
   instance_profile_name = module.iam.instance_profile_name
+  
+  web_tg_arn = module.public_alb.web_tg_arn
 }
 
 module "cicd_server" {
