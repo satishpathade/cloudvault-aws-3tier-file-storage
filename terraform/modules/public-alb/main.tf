@@ -27,7 +27,6 @@ resource "aws_lb_target_group" "web_tg" {
   tags = var.tags
 }
 
-
 resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_lb.this.arn
   port              = 80

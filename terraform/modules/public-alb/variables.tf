@@ -2,15 +2,6 @@ variable "project_name" {
   type = string
 }
 
-# fortarget group
-variable "web_instance_id" {
-  type = string
-}
-
-variable "app_instance_id" {
-  type = string
-}
-
 variable "vpc_id" {
   type = string
 }
