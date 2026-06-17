@@ -100,7 +100,7 @@ resource "aws_security_group" "app" {
     from_port       = 30080
     to_port         = 30080
     protocol        = "tcp"
-    security_groups = [aws_security_group.public_alb]
+    security_groups = [aws_security_group.public_alb.id]
   }
 
   # BGP port
