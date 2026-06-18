@@ -60,6 +60,44 @@ pipeline {
                 }
             }
         }
+
+        stage('Create ConfigMap') {
+            steps {
+                sh '''
+                    kubectl create configmap cloudvault-config \
+                        --from-literal=DB_HOST="$DB_HOST" \
+                        --from-literal=DB_NAME="$DB_NAME" \
+                        --from-literal=AWS_REGION="$AWS_REGION" \
+                        --from-literal=S3_BUCKET="$S3_BUCKET" \
+                        -n cloudvault \
+                        --dry-run=client -o yaml | kubectl apply -f -
+                '''
+            }
+        }
+
+        stage('Create Secret') {
+            steps {
+                sh '''
+                    kubectl create secret generic cloudvault-secret \
+                        --from-literal=DB_USERNAME="$DB_USERNAME" \
+                        --from-literal=DB_PASSWORD="$DB_PASSWORD" \
+                        --from-literal=SECRET_KEY="$SECRET_KEY" \
+                        -n cloudvault \
+                        --dry-run=client -o yaml | kubectl apply -f -
+                '''
+            }
+        }
+
+        stage('Deploy to kubernetes') {
+            steps {
+                sh '''
+                    kubectl apply -f kubernetes/namespace.yml
+                    kubectl apply -f kubernetes/deployment.yml
+                    ubectl rollout restart deployment/cloudvault-app -n cloudvault
+                '''
+            }
+        }
+
     }
 
     post {
