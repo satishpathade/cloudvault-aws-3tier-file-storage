@@ -36,6 +36,22 @@ resource "aws_security_group" "web" {
   }
 
   ingress {
+    description     = "Kubelet API from K8s Master"
+    from_port       = 10250
+    to_port         = 10250
+    protocol        = "tcp"
+    security_groups = [var.cicd_sg_id]
+  }
+
+  ingress {
+    description = "Node to Node"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    self        = true
+  }
+
+  ingress {
     from_port       = 30080
     to_port         = 30080
     protocol        = "tcp"
@@ -44,9 +60,9 @@ resource "aws_security_group" "web" {
 
   # BGP port
   ingress {
-    from_port = 179
-    to_port = 179
-    protocol = "tcp"
+    from_port   = 179
+    to_port     = 179
+    protocol    = "tcp"
     cidr_blocks = ["10.0.0.0/16"]
   }
 
@@ -97,6 +113,22 @@ resource "aws_security_group" "app" {
   }
 
   ingress {
+    description     = "Kubelet API from K8s Master"
+    from_port       = 10250
+    to_port         = 10250
+    protocol        = "tcp"
+    security_groups = [var.cicd_sg_id]
+  }
+
+  ingress {
+    description = "Node to Node"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    self        = true
+  }
+
+  ingress {
     from_port       = 30080
     to_port         = 30080
     protocol        = "tcp"
@@ -105,9 +137,9 @@ resource "aws_security_group" "app" {
 
   # BGP port
   ingress {
-    from_port = 179
-    to_port = 179
-    protocol = "tcp"
+    from_port   = 179
+    to_port     = 179
+    protocol    = "tcp"
     cidr_blocks = ["10.0.0.0/16"]
   }
 
@@ -128,10 +160,14 @@ resource "aws_security_group" "rds" {
   vpc_id      = var.vpc_id
 
   ingress {
-    from_port       = 3306
-    to_port         = 3306
-    protocol        = "tcp"
-    security_groups = [var.cicd_sg_id]
+    from_port = 3306
+    to_port   = 3306
+    protocol  = "tcp"
+    security_groups = [
+      var.cicd_sg_id,
+      aws_security_group.web.id,
+      aws_security_group.app.id
+    ]
   }
 
   egress {
