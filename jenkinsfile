@@ -103,11 +103,12 @@ pipeline {
 
     post {
         success {
-            echo 'Docker image built and pushed successfully.'
+            echo 'CloudVault deployed successfully.'
         }
 
         failure {
-            echo 'Failed to build or push the Docker image.'
+            echo 'Pipeline Failed'
         }
     }
+
 }
