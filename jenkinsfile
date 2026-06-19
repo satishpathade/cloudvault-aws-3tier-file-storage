@@ -4,14 +4,24 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'satishpathade/cloudvaultapp'
         IMAGE_TAG = "${BUILD_NUMBER}"
+
+        DB_HOST     = credentials('db-host')
+        DB_NAME     = credentials('db-name')
+        DB_USERNAME = credentials('db-username')
+        DB_PASSWORD = credentials('db-password')
+        SECRET_KEY  = credentials('secret-key')
+        AWS_REGION  = credentials('aws-region')
+        S3_BUCKET   = credentials('s3-bucket')
+        AWS_ACCESS_KEY_ID     = credentials('aws-access-key-id')
+        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
     }
 
     stages {
 
         stage('Checkout') {
             steps {
-                echo 'Cloning the repository'
-                checkout scm
+                git branch: 'main',
+                    url: 'https://github.com/satishpathade/cloudvault-aws-3tier-devsecops.git'
             }
         }
 
@@ -31,7 +41,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 sh '''
-                    docker build -t $DOCKER_IMAGE:IMAGE_TAG -f docker/Dockerfile .
+                    docker build -t $DOCKER_IMAGE:$IMAGE_TAG -f docker/Dockerfile .
                 '''
             }
         }
@@ -39,7 +49,7 @@ pipeline {
         stage('Trivy Image Scan') {
             steps {
                 sh '''
-                    trivy image --severity HIGH,CRITICAL --exit-code 0 DOCKER_IMAGE:IMAGE_TAG
+                    trivy image --severity HIGH,CRITICAL --exit-code 0 $DOCKER_IMAGE:$IMAGE_TAG
                 '''
             }
         }
@@ -55,8 +65,18 @@ pipeline {
                 ]) {
                     sh '''
                         echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
-                        docker push DOCKER_IMAGE:IMAGE_TAG
+                        docker push $DOCKER_IMAGE:$IMAGE_TAG
                         docker logout
+                    '''
+                }
+            }
+        }
+
+        stage ('Ansible playbook run'){
+            steps {
+                dir('ansible') {
+                    sh '''
+                        ansible-playbook playbooks/site.yml
                     '''
                 }
             }
@@ -83,6 +103,8 @@ pipeline {
                         --from-literal=DB_USERNAME="$DB_USERNAME" \
                         --from-literal=DB_PASSWORD="$DB_PASSWORD" \
                         --from-literal=SECRET_KEY="$SECRET_KEY" \
+                        --from-literal=AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" \
+                        --from-literal=AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" \
                         -n cloudvault \
                         --dry-run=client -o yaml | kubectl apply -f -
                 '''
@@ -94,7 +116,7 @@ pipeline {
                 sh '''
                     kubectl apply -f kubernetes/namespace.yml
                     kubectl apply -f kubernetes/deployment.yml
-                    ubectl rollout restart deployment/cloudvault-app -n cloudvault
+                    kubectl set image deployment/cloudvault-app cloudvault-app=$DOCKER_IMAGE:$IMAGE_TAG -n cloudvault
                 '''
             }
         }
