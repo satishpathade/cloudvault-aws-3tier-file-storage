@@ -9,5 +9,5 @@ terraform.tfvars.json
 terraform/keys/*.pem
 .env
 .vscode/
-kubernets/secret.yml
-kubernete/configmap.yml
+kubernetes/secret.yml
+kubernetes/configmap.yml
