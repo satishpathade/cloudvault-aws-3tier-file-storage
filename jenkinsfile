@@ -72,15 +72,15 @@ pipeline {
             }
         }
 
-        stage ('Ansible playbook run'){
-            steps {
-                dir('ansible') {
-                    sh '''
-                        ansible-playbook playbooks/site.yml
-                    '''
-                }
-            }
-        }
+        // stage ('Ansible playbook run'){
+        //     steps {
+        //         dir('ansible') {
+        //             sh '''
+        //                 ansible-playbook playbooks/site.yml
+        //             '''
+        //         }
+        //     }
+        // } 
 
         stage('Create ConfigMap') {
             steps {
