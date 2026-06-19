@@ -19,7 +19,13 @@ sudo chown ec2-user:ec2-user /home/ec2-user/.ssh/cloudvault-cicd.pem
 sudo chmod 400 /home/ec2-user/.ssh/cloudvault-cicd.pem
 
 # jenkins user
-mkdir -p /var/lib/jenkins/.ssh
-cp /home/ec2-user/.ssh/cloudvault-cicd.pem /var/lib/jenkins/.ssh/cloudvault-cicd.pem
-chown jenkins:jenkins /var/lib/jenkins/.ssh/cloudvault-cicd.pem
-chmod 400 /var/lib/jenkins/.ssh/cloudvault-cicd.pem
+sudo mkdir -p /var/lib/jenkins/.ssh
+sudo cp /home/ec2-user/.ssh/cloudvault-cicd.pem /var/lib/jenkins/.ssh/cloudvault-cicd.pem
+sudo chown jenkins:jenkins /var/lib/jenkins/.ssh/cloudvault-cicd.pem
+sudo chmod 400 /var/lib/jenkins/.ssh/cloudvault-cicd.pem
+
+# k8s-config jenkins 
+sudo mkdir -p /var/lib/jenkins/.kube
+sudo cp /home/ec2-user/.kube/config /var/lib/jenkins/.kube/config
+sudo chown -R /jenkins:jenkins /var/lib/jenkins/.kube
+sudo chmod 600 /var/lib/jenkins/.kube/config
