@@ -25,7 +25,7 @@
     state: started
     enabled: true
 
-- name: add ec2-user in jenkins group
+- name: adding jenkins user to ec2-user group.
   user:
     name: jenkins
     groups:
@@ -38,3 +38,20 @@
     dest: /etc/sudoers.d/jenkins
     content: "jenkins ALL=(ALL) NOPASSWD: ALL"
     mode: '0440'
+
+- name: Create Jenkins kube directory
+  file:
+    path: /var/lib/jenkins/.kube
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: '0700'
+
+- name: Copy kubeconfig to Jenkins
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: /var/lib/jenkins/.kube/config
+    remote_src: true
+    owner: jenkins
+    group: jenkins
+    mode: '0600'
