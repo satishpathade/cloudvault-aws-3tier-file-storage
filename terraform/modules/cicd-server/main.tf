@@ -103,7 +103,7 @@ resource "aws_instance" "cicd_server" {
 
   # change root volume
   root_block_device {
-    volume_size = 30
+    volume_size = 50
     volume_type = "gp3"
   }
 
