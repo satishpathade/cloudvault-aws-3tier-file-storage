@@ -74,11 +74,13 @@ resource "aws_iam_role_policy" "s3_key_access" {
         Effect = "Allow"
 
         Action = [
-          "s3:GetObject"
+          "s3:GetObject",
+          "s3:ListBucket"
         ]
 
         Resource = [
-          "arn:aws:s3:::${var.project_name}-file-storage/CloudVault-CICD.pem"
+          "arn:aws:s3:::${var.project_name}-file-storage",
+          "arn:aws:s3:::${var.project_name}-file-storage/*"
         ]
       }
     ]
