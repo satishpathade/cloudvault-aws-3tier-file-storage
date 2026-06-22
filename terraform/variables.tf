@@ -110,7 +110,7 @@ variable "git_repo_url" {
 
 variable "key_name" {
   type    = string
-  default = "cloudvault-cicd"
+  default = "CloudVault-CICD"
 }
 
 variable "tags" {
