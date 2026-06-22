@@ -6,6 +6,7 @@ pip3 install boto3 botocore
 ansible-galaxy collection install amazon.aws
 
 
+sudo -u ec2-user git clone https://github.com/satishpathade/cloudvault-aws-3tier-devsecops.git
 sudo xfs_growfs -d /
 
 mkdir -p /home/ec2-user/.ssh
