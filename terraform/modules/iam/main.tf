@@ -78,7 +78,7 @@ resource "aws_iam_role_policy" "s3_key_access" {
         ]
 
         Resource = [
-          "arn:aws:s3:::${var.project_name}-file-storage/cloudvault-cicd.pem"
+          "arn:aws:s3:::${var.project_name}-file-storage/CloudVault-CICD.pem"
         ]
       }
     ]
