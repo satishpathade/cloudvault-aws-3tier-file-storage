@@ -102,8 +102,8 @@ module "s3" {
 
 resource "aws_s3_object" "ansible_key" {
   bucket = module.s3.bucket_name
-  key    = "cloudvault-cicd.pem"
-  source = "${path.module}/keys/cloudvault-cicd.pem"
+  key    = "CloudVault-CICD.pem"
+  source = "${path.module}/keys/CloudVault-CICD.pem"
 }
 
 module "cloudfront" {
