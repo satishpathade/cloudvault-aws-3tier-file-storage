@@ -122,9 +122,14 @@ pipeline {
         stage('Deploy to kubernetes') {
             steps {
                 sh '''
+                    kubectl apply -f kubernetes/service.yml
                     kubectl apply -f kubernetes/deployment.yml
+
                     kubectl set image deployment/cloudvault-app \
                     cloudvault-app=$DOCKER_IMAGE:$IMAGE_TAG \
+                    -n cloudvault
+
+                    kubectl rollout status deployment/cloudvault-app \
                     -n cloudvault
                 '''
             }
