@@ -1,14 +1,19 @@
-# CloudVault - AWS Cloud-Native 3-Tier DevSecOps File Storage Platform
+## CloudVault - AWS Cloud-Native 3-Tier DevSecOps File Storage Platform
 
 CloudVault is a cloud-native file storage application inspired by services such as Google Drive and iCloud.
 
-The project demonstrates end-to-end DevSecOps practices by combining Infrastructure as Code (IaC), CI/CD automation, containerization, Kubernetes orchestration, security scanning, and AWS cloud services.
+The project demonstrates end-to-end DevSecOps practices by integrating Infrastructure as Code (IaC), CI/CD automation, containerization, Kubernetes orchestration, security scanning, and AWS cloud services.
 
 ## Project Overview
 
-Users can upload files through a web interface. The application stores uploaded files in Amazon S3 and saves file metadata in Amazon RDS MySQL.
+CloudVault enables users to upload and manage files through a web interface. Uploaded files are stored in Amazon S3, while file metadata is maintained in Amazon RDS MySQL.
 
-The entire infrastructure is provisioned using **Terraform**, configured using Ansible, and deployed through an automated Jenkins CI/CD pipeline.
+The entire infrastructure is provisioned using Terraform, configured using Ansible, and deployed through an automated Jenkins CI/CD pipeline, ensuring a scalable, secure, and cloud-native deployment workflow. 
+
+## AWS Architecture
+![3-tier-aws-architecture](architecture/3-tier-aws-architecture.png)
+
+**[Read aws architecture in detailed. ](architecture/architecture.md)**
 
 ## Project Features
 
@@ -23,11 +28,6 @@ The entire infrastructure is provisioned using **Terraform**, configured using A
 - Amazon S3 integration for file storage
 - Amazon RDS MySQL integration for metadata storage
 - CloudFront content delivery integration
-
-## AWS Architecture
-![3-tier-aws-architecture](architecture/3-tier-aws-architecture.png)
-
-**[Read aws architecture in detailed. ](architecture/architecture.md)**
 
 ## Project Flow 
 **User → CloudFront → Application Load Balancer → Kubernetes Worker Nodes → Flask Pods → Amazon S3 (File Storage) + Amazon RDS MySQL (Metadata Storage)**
@@ -85,7 +85,7 @@ The entire infrastructure is provisioned using **Terraform**, configured using A
 
 **GitHub → Jenkins → SonarQube → Docker Build → Trivy Scan → Docker Hub → Kubernetes Deployment**
 
-![architecture/CloudVault-cicd-flow.png](architecture/CloudVault-cicd-flow.png)
+![CI/CD Pipeline](architecture/CloudVault-cicd-flow.png)
 
 ## Future Enhancements
 
@@ -95,6 +95,17 @@ The entire infrastructure is provisioned using **Terraform**, configured using A
 - Implement Horizontal Pod Autoscaler (HPA).
 - Integrate AWS Secrets Manager for secret management.
 - Integration with AI-Powered Log Analysis for real-time monitoring and troubleshooting.
+
+## Project Status
+✓ Infrastructure Provisioned with Terraform  
+✓ Server Configuration Automated with Ansible  
+✓ CI/CD Pipeline Implemented with Jenkins  
+✓ Dockerized Application Deployment  
+✓ Kubernetes Orchestration  
+✓ SonarQube & Trivy Integration  
+✓ Amazon S3 File Storage  
+✓ Amazon RDS MySQL Metadata Storage  
+✓ ALB Integration
 
 ## Author
 
