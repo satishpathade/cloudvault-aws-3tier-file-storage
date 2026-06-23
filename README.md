@@ -66,8 +66,6 @@ The entire infrastructure is provisioned using Terraform, configured using Ansib
 | Trivy | Container image vulnerability scanning |
 | Docker Hub | Store and distribute Docker images |
 | Kubernetes (Kubeadm) | Deploy and manage containerized workloads |
-| ConfigMaps | Manage application configuration |
-| Secrets | Securely store sensitive information |
 | Prometheus | Collect infrastructure and application metrics |
 | Grafana | Create monitoring dashboards and visualizations |
 
