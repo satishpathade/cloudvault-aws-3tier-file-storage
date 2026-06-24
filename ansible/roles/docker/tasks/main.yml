@@ -1,5 +1,5 @@
---- 
-- name: update package 
+---
+- name: update package
   dnf:
     name: "*"
     state: latest
@@ -10,7 +10,7 @@
     state: present
 
 - name: start docker
-  service: 
+  service:
     name: docker
     state: started
     enabled: true
