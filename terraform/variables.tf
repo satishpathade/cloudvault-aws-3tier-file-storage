@@ -105,7 +105,7 @@ variable "db_instance_class" {
 
 variable "git_repo_url" {
   type    = string
-  default = "https://github.com/satishpathade/cloudvault-aws-3tier-devsecops.git"
+  default = "https://github.com/satishpathade/cloudvault-aws-3tier-file-storage"
 }
 
 variable "key_name" {
