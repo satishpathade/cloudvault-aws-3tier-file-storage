@@ -21,7 +21,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/satishpathade/cloudvault-aws-3tier-devsecops.git'
+                    url: 'https://github.com/satishpathade/cloudvault-aws-3tier-file-storage.git'
             }
         }
 
