@@ -12,7 +12,7 @@ sudo xfs_growfs -d /
 # Clone repository
 
 cd /home/ec2-user
-sudo -u ec2-user git clone https://github.com/satishpathade/cloudvault-aws-3tier-devsecops.git
+sudo -u ec2-user git clone https://github.com/satishpathade/cloudvault-aws-3tier-file-storage.git
 
 # Create SSH directory
 mkdir -p /home/ec2-user/.ssh
