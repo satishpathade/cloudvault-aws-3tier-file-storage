@@ -2,9 +2,9 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // ── DRAG & DROP ───────────────────────────────
-    const dropZone   = document.getElementById('dropZone');
-    const fileInput  = document.getElementById('fileInput');
+    // DRAG & DROP 
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
     const uploadForm = document.getElementById('uploadForm');
 
     if (dropZone) {
@@ -42,9 +42,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ── SHOW SELECTED FILES ───────────────────────
+    // SHOW SELECTED FILES
     function showSelectedFiles(files) {
-        const container    = document.getElementById('selectedFiles');
+        const container = document.getElementById('selectedFiles');
         const uploadActions = document.getElementById('uploadActions');
 
         if (!container) return;
@@ -73,29 +73,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // ── FILE EMOJI ────────────────────────────────
+    // FILE EMOJI
     function getFileEmoji(type) {
         if (!type) return '📁';
-        if (type.startsWith('image/'))       return '🖼️';
-        if (type.startsWith('video/'))       return '🎬';
-        if (type.startsWith('audio/'))       return '🎵';
-        if (type === 'application/pdf')      return '📕';
+        if (type.startsWith('image/')) return '🖼️';
+        if (type.startsWith('video/')) return '🎬';
+        if (type.startsWith('audio/')) return '🎵';
+        if (type === 'application/pdf') return '📕';
         if (type.includes('zip') || type.includes('rar') || type.includes('tar')) return '📦';
         if (type.includes('word') || type.includes('document')) return '📝';
-        if (type.includes('sheet') || type.includes('excel'))   return '📊';
-        if (type.startsWith('text/'))        return '📄';
+        if (type.includes('sheet') || type.includes('excel')) return '📊';
+        if (type.startsWith('text/')) return '📄';
         return '📁';
     }
 
-    // ── FORMAT FILE SIZE ──────────────────────────
+    // FORMAT FILE SIZE
     function formatSize(bytes) {
-        if (bytes < 1024)            return `${bytes} B`;
-        if (bytes < 1024 * 1024)    return `${(bytes / 1024).toFixed(1)} KB`;
-        if (bytes < 1024 ** 3)      return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+        if (bytes < 1024) return `${bytes} B`;
+        if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+        if (bytes < 1024 ** 3) return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
         return `${(bytes / (1024 ** 3)).toFixed(1)} GB`;
     }
 
-    // ── UPLOAD WITH PROGRESS ──────────────────────
+    // UPLOAD WITH PROGRESS
     if (uploadForm) {
         uploadForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -104,17 +104,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!files.length) return;
 
             const progressContainer = document.getElementById('progressContainer');
-            const progressFill      = document.getElementById('progressFill');
-            const progressText      = document.getElementById('progressText');
-            const uploadBtn         = document.getElementById('uploadBtn');
-            const uploadActions     = document.getElementById('uploadActions');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            const uploadBtn = document.getElementById('uploadBtn');
+            const uploadActions = document.getElementById('uploadActions');
 
             // Show progress
             if (progressContainer) progressContainer.style.display = 'block';
-            if (uploadActions)     uploadActions.style.display = 'none';
+            if (uploadActions) uploadActions.style.display = 'none';
 
             const formData = new FormData(uploadForm);
-            const xhr      = new XMLHttpRequest();
+            const xhr = new XMLHttpRequest();
 
             // Progress tracking
             xhr.upload.addEventListener('progress', (e) => {
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ── AUTO DISMISS FLASH ────────────────────────
+    // AUTO DISMISS FLASH
     const flashes = document.querySelectorAll('.flash');
     flashes.forEach(flash => {
         setTimeout(() => {
@@ -159,18 +159,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
-// ── CLEAR FILES ───────────────────────────────────
+// CLEAR FILES
 function clearFiles() {
-    const fileInput     = document.getElementById('fileInput');
-    const container     = document.getElementById('selectedFiles');
+    const fileInput = document.getElementById('fileInput');
+    const container = document.getElementById('selectedFiles');
     const uploadActions = document.getElementById('uploadActions');
 
-    if (fileInput)      fileInput.value = '';
-    if (container)      container.innerHTML = '';
-    if (uploadActions)  uploadActions.style.display = 'none';
+    if (fileInput) fileInput.value = '';
+    if (container) container.innerHTML = '';
+    if (uploadActions) uploadActions.style.display = 'none';
 }
 
-// ── CONFIRM DELETE ────────────────────────────────
+// CONFIRM DELETE
 function confirmDelete() {
     return confirm('Delete this file? This cannot be undone.');
 }
