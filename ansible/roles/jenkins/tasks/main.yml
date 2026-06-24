@@ -37,7 +37,7 @@
   copy:
     dest: /etc/sudoers.d/jenkins
     content: "jenkins ALL=(ALL) NOPASSWD: ALL"
-    mode: '0440'
+    mode: "0440"
 
 - name: Create Jenkins kube directory
   file:
@@ -45,7 +45,7 @@
     state: directory
     owner: jenkins
     group: jenkins
-    mode: '0700'
+    mode: "0700"
 
 - name: Copy kubeconfig to Jenkins
   copy:
@@ -54,4 +54,4 @@
     remote_src: true
     owner: jenkins
     group: jenkins
-    mode: '0600'
+    mode: "0600"
