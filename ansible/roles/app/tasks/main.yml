@@ -1,5 +1,0 @@
----
-- name: Install Git
-  dnf:
-    name: git
-    state: present
