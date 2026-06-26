@@ -12,7 +12,7 @@
   ansible.builtin.get_url:
     url: https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.8.0.2856-linux.zip
     dest: /tmp/sonar-scanner.zip
-    mode: '0644'
+    mode: "0644"
 
 - name: Unzip Sonar Scanner
   ansible.builtin.unarchive:
