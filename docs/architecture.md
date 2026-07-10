@@ -7,6 +7,10 @@ The architecture is designed to be modular, secure, scalable, and easy to mainta
 
 ---
 
+## Architecture Diagram
+
+![architecture](3tier-architecture-1.png)
+
 ## Architecture Layers
 
 ## EC2 Instance Structure - v1.0
@@ -132,22 +136,3 @@ The infrastructure is designed to minimize AWS costs while remaining scalable.
 | Amazon S3 | Low-cost and highly durable storage for uploaded files. |
 | Infrastructure as Code | Prevents unused resources and simplifies cleanup with `terraform destroy`. |
 | Modular Terraform | Allows deploying only required infrastructure components. |
-
----
-
-## Technology Stack
-
-| Category | Technologies |
-|----------|--------------|
-| Cloud Platform | AWS |
-| Infrastructure as Code | Terraform |
-| Configuration Management | Ansible |
-| CI/CD | Jenkins |
-| Containerization | Docker |
-| Orchestration | Kubernetes |
-| Monitoring | Prometheus, Grafana |
-| Security | IAM, AWS Secrets Manager, SonarQube, Trivy |
-| Backend | Python, Flask |
-| Database | MySQL (Amazon RDS) |
-| Object Storage | Amazon S3 |
-| CDN | CloudFront |
