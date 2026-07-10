@@ -9,7 +9,7 @@ The architecture is designed to be modular, secure, scalable, and easy to mainta
 
 ## Architecture Diagram
 
-![architecture](3tier-architecture-1.png)
+![architecture](3tier-architecture.png)
 
 ## Architecture Layers
 
