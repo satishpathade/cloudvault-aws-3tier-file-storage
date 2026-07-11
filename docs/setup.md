@@ -14,7 +14,7 @@ Ensure your local development machine contains the following accounts and comman
 
 ---
 
-<!-- ## Core Deployment Steps
+## Core Deployment Steps
 
 ### 1. Clone the Repository
 `git clone https://github.com
@@ -37,6 +37,9 @@ terraform apply --auto-approve
 ```
 *This step provisions your custom VPC, public/private subnets, Application Load Balancer, EC2 instances, S3 storage, and your RDS MySQL cluster.*
 
+### 4. SSH CI/CD Server
+    `ssh -i <private-key path> ec2-user@<server-public-ip>`
+
 ### 4. Configuration Management via Ansible
 Move to your playbook directory to automate server package installation and configurations:
 ```bash
@@ -48,7 +51,7 @@ cd ../ansible
 ansible-playbook -i inventory.ini playbooks/site.yml
 ```
 
---- -->
+---
 <!-- 
 ## Platform & Pipeline Configurations
 
