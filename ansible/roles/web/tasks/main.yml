@@ -13,3 +13,8 @@
   service:
     name: nginx
     state: started
+
+- name: install MySql
+  dnf: 
+    name: mariadb105-server
+    state: present
