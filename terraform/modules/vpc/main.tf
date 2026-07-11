@@ -79,7 +79,7 @@ resource "aws_subnet" "db" {
 # Elastic IPs
 
 resource "aws_eip" "nat" {
-  count  = 2
+  count  = 1
   domain = "vpc"
   depends_on = [aws_internet_gateway.this]
 
