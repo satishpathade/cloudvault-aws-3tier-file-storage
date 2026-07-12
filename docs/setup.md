@@ -40,7 +40,7 @@ terraform apply --auto-approve
 ### 4. SSH CI/CD Server
     `ssh -i <private-key path> ec2-user@<server-public-ip>`
 
-### 4. Configuration Management via Ansible
+### 5. Configuration Management via Ansible
 Move to your playbook directory to automate server package installation and configurations:
 ```bash
 cd ../ansible
@@ -52,7 +52,7 @@ ansible-playbook -i inventory.ini playbooks/site.yml
 ```
 
 ---
-<!-- 
+
 ## Platform & Pipeline Configurations
 
 ### 5. Define Jenkins Credentials
@@ -74,7 +74,7 @@ Establish an SSH session to your master cluster node control plane and confirm c
 ```bash
 kubectl get nodes
 kubectl get namespaces
-``` -->
+``` 
 
 
 <!-- ## Continuous Deployment
@@ -89,7 +89,6 @@ Commit changes or configure a GitHub Webhook to ping your Jenkins instance. Push
  ☸️ 6. K8s Manifest App ──> 🔑 5. ConfigMaps & Secrets ──> 🛑 4. Trivy Vuln Scan
 ``` -->
 
----
 <!-- 
 ## 🔎 Verification & Testing
 
