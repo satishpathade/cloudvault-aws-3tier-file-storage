@@ -20,8 +20,8 @@ CloudVault v1.0 uses three EC2 instances. The CI/CD server manages the deploymen
 | EC2 Instance | Instance Type | Hosted Services | Purpose |
 |-------------|---------------|-----------------|---------|
 | **CI/CD Server** | c7i-flex.large | Jenkins, SonarQube, Docker, Ansible, Trivy, Kubernetes Control Plane (`kubeadm`) | Builds, tests, scans, and deploys the application while managing the Kubernetes cluster. |
-| **Worker Node 1** | t3.micro | Docker, Kubernetes Worker (`kubelet`), Flask Application Pods | Hosts CloudVault application workloads and serves user requests. |
-| **Worker Node 2** | t3.micro | Docker, Kubernetes Worker (`kubelet`), Flask Application Pods | Provides high availability and scales application workloads alongside Worker Node 1. |
+| **Worker Node 1** | t3.small | Docker, Kubernetes Worker (`kubelet`), Flask Application Pods | Hosts CloudVault application workloads and serves user requests. |
+| **Worker Node 2** | t3.small | Docker, Kubernetes Worker (`kubelet`), Flask Application Pods | Provides high availability and scales application workloads alongside Worker Node 1. |
 
 ## Design Decisions
 
@@ -132,14 +132,20 @@ CloudVault follows security best practices throughout the infrastructure.
 
 ## Cost Optimization
 
-The infrastructure is designed to minimize AWS costs while remaining scalable.
+The infrastructure is designed to provide a balance between performance and cost by selecting instance types based on workload requirements.
 
-| Optimization | Benefit |
-|-------------|---------|
-| Single Availability Zone (Development) | Reduces infrastructure cost during development. |
-| Auto Scaling Groups | Launches additional EC2 instances only when required. |
-| Kubernetes HPA | Scales application pods based on CPU and memory usage. |
-| CloudFront | Reduces repeated requests to backend services. |
-| Amazon S3 | Low-cost and highly durable storage for uploaded files. |
-| Infrastructure as Code | Prevents unused resources and simplifies cleanup with `terraform destroy`. |
-| Modular Terraform | Allows deploying only required infrastructure components. |
+| Optimization | Description |
+|--------------|-------------|
+| Right-Sized Instances | `m7i-flex.large` for the CI/CD server and `t3.small` for Kubernetes worker nodes. |
+| Managed Services | Uses Amazon RDS, S3, and CloudFront to reduce operational overhead. |
+| Infrastructure as Code | Terraform enables consistent deployments and prevents unnecessary resource creation. |
+| Containerization | Kubernetes efficiently utilizes worker node resources and supports future scaling. |
+
+### Estimated Infrastructure Cost
+
+| Resource | Estimated Cost |
+|----------|---------------:|
+| **Per Hour** | **~₹16–18** |
+| **Per Day** | **~₹390–430** |
+
+> **Note:** Costs are approximate for the Mumbai (`ap-south-1`) region and may vary based on storage, data transfer, and actual AWS usage.
