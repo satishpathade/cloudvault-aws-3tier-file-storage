@@ -75,6 +75,8 @@ resource "aws_iam_role_policy" "s3_key_access" {
 
         Action = [
           "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject",
           "s3:ListBucket"
         ]
 
@@ -82,6 +84,30 @@ resource "aws_iam_role_policy" "s3_key_access" {
           "arn:aws:s3:::${var.project_name}-file-storage",
           "arn:aws:s3:::${var.project_name}-file-storage/*"
         ]
+      }
+    ]
+  })
+}
+
+# Secrets Manager Access
+
+resource "aws_iam_role_policy" "secrets_manager_access" {
+  name = "${var.project_name}-secrets-manager-access"
+  role = aws_iam_role.ec2_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+
+    Statement = [
+      {
+        Effect = "Allow"
+
+        Action = [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret"
+        ]
+
+        Resource = "*"
       }
     ]
   })
