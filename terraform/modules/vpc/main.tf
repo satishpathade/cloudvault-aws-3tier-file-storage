@@ -137,7 +137,7 @@ resource "aws_route_table" "web" {
 
   route {
     cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.this[count.index].id
+    nat_gateway_id = aws_nat_gateway.this[0].id
   }
 
   tags = {
@@ -161,7 +161,7 @@ resource "aws_route_table" "app" {
 
   route {
     cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.this[count.index].id
+    nat_gateway_id = aws_nat_gateway.this[0].id
   }
 
   tags = {
