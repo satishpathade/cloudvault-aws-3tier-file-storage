@@ -19,11 +19,18 @@ CloudVault v1.0 uses three EC2 instances. The CI/CD server manages the deploymen
 
 | EC2 Instance | Instance Type | Hosted Services | Purpose |
 |-------------|---------------|-----------------|---------|
-| **CI/CD Server** | t3.medium | Jenkins, SonarQube, Docker, Ansible, Trivy, Kubernetes Control Plane (`kubeadm`) | Builds, tests, scans, and deploys the application while managing the Kubernetes cluster. |
+| **CI/CD Server** | c7i-flex.large | Jenkins, SonarQube, Docker, Ansible, Trivy, Kubernetes Control Plane (`kubeadm`) | Builds, tests, scans, and deploys the application while managing the Kubernetes cluster. |
 | **Worker Node 1** | t3.micro | Docker, Kubernetes Worker (`kubelet`), Flask Application Pods | Hosts CloudVault application workloads and serves user requests. |
 | **Worker Node 2** | t3.micro | Docker, Kubernetes Worker (`kubelet`), Flask Application Pods | Provides high availability and scales application workloads alongside Worker Node 1. |
 
+## Design Decisions
+
+- **c7i-flex.large** was selected for the CI/CD server because Jenkins and SonarQube require more memory than CPU. The additional 8 GiB RAM provides smoother builds and analysis.
+- **t3.small** instances were selected for Kubernetes worker nodes because they are cost-effective for development, testing, and portfolio-scale workloads while providing sufficient resources for the application pods.
+- The architecture can be scaled by upgrading worker nodes or enabling Auto Scaling Groups as workload increases.
+
 > **Note:** The Kubernetes control plane is hosted on the CI/CD server, while application workloads run on the worker nodes in the Web and Application tiers.
+> **Note:** The infrastructure is designed to scale by upgrading instance types or adding additional Kubernetes worker nodes as application traffic and resource requirements grow.
 
 ---
 
