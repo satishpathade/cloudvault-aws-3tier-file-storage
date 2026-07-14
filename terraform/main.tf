@@ -112,3 +112,18 @@ module "cloudfront" {
   origin_dns_name = module.public_alb.alb_dns_name
   tags            = var.tags
 }
+
+module "secrets_manager" {
+  source = "./modules/secrets-manager"
+  project_name = var.project_name
+
+  db_host     = module.rds.db_endpoint
+  db_name     = var.db_name
+  db_username = var.db_username
+  db_password = var.db_password
+
+  secret_key = var.secret_key
+  aws_region = var.aws_region
+  s3_bucket  = module.s3.bucket_name
+  tags = var.tags
+}
