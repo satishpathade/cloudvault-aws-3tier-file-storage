@@ -4,16 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'satishpathade/cloudvaultapp'
         IMAGE_TAG = "${BUILD_NUMBER}"
-
-        DB_HOST     = credentials('db-host')
-        DB_NAME     = credentials('db-name')
-        DB_USERNAME = credentials('db-username')
-        DB_PASSWORD = credentials('db-password')
-        SECRET_KEY  = credentials('secret-key')
-        AWS_REGION  = credentials('aws-region')
-        S3_BUCKET   = credentials('s3-bucket')
-        AWS_ACCESS_KEY_ID     = credentials('aws-access-key-id')
-        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
+        SECRET_NAME = 'CloudVault-secret'
     }
 
     stages {
@@ -93,6 +84,16 @@ pipeline {
         stage('Create ConfigMap') {
             steps {
                 sh '''
+                    SECRET_JSON=$(aws secretsmanager get-secret-value \
+                        --secret-id "$SECRET_NAME" \
+                        --query SecretString \
+                        --output text)
+
+                    DB_HOST=$(echo "$SECRET_JSON" | jq -r '.DB_HOST')
+                    DB_NAME=$(echo "$SECRET_JSON" | jq -r '.DB_NAME')
+                    AWS_REGION=$(echo "$SECRET_JSON" | jq -r '.AWS_REGION')
+                    S3_BUCKET=$(echo "$SECRET_JSON" | jq -r '.S3_BUCKET')
+
                     kubectl create configmap cloudvault-config \
                         --from-literal=DB_HOST="$DB_HOST" \
                         --from-literal=DB_NAME="$DB_NAME" \
@@ -107,12 +108,19 @@ pipeline {
         stage('Create Secret') {
             steps {
                 sh '''
+                    SECRET_JSON=$(aws secretsmanager get-secret-value \
+                        --secret-id "$SECRET_NAME" \
+                        --query SecretString \
+                        --output text)
+
+                    DB_USERNAME=$(echo "$SECRET_JSON" | jq -r '.DB_USERNAME')
+                    DB_PASSWORD=$(echo "$SECRET_JSON" | jq -r '.DB_PASSWORD')
+                    SECRET_KEY=$(echo "$SECRET_JSON" | jq -r '.SECRET_KEY')
+
                     kubectl create secret generic cloudvault-secret \
                         --from-literal=DB_USERNAME="$DB_USERNAME" \
                         --from-literal=DB_PASSWORD="$DB_PASSWORD" \
                         --from-literal=SECRET_KEY="$SECRET_KEY" \
-                        --from-literal=AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" \
-                        --from-literal=AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" \
                         -n cloudvault \
                         --dry-run=client -o yaml | kubectl apply -f -
                 '''
