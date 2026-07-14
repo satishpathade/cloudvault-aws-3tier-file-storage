@@ -113,6 +113,11 @@ variable "key_name" {
   default = "CloudVault-CICD"
 }
 
+variable "secret_key" {
+  type      = string
+  sensitive = true
+}
+
 variable "tags" {
   type = map(string)
 
