@@ -104,6 +104,7 @@ resource "aws_iam_role_policy" "secrets_manager_access" {
 
         Action = [
           "secretsmanager:GetSecretValue",
+          "secretsmanager:ListSecrets",
           "secretsmanager:DescribeSecret"
         ]
 
