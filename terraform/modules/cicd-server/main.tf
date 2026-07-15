@@ -28,50 +28,49 @@ resource "aws_security_group" "cicd" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # Jenkins port
+  # Jenkins
   ingress {
     description = "Jenkins"
-
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # SonarQube port
+  # SonarQube
   ingress {
     description = "SonarQube"
-    from_port = 9000
-    to_port = 9000
-    protocol = "tcp"
+    from_port   = 9000
+    to_port     = 9000
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # k8s API port
- ingress {
-  description = "Kubernetes API"
-  from_port   = 6443
-  to_port     = 6443
-  protocol    = "tcp"
-  cidr_blocks = ["0.0.0.0/0"]
-}
-
-  # kubelet port
+  # Grafana
   ingress {
-    description = "kubelet"
-    from_port = 10250
-    to_port =10250
-    protocol = "tcp"
+    description = "Grafana"
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # BGP port
+  # Prometheus
   ingress {
-    description = "BGP"
-    from_port = 179
-    to_port = 179
-    protocol = "tcp"
-    cidr_blocks = ["10.0.0.0/16"]
+    description = "Prometheus"
+    from_port   = 9090
+    to_port     = 9090
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Kubernetes API
+  ingress {
+    description = "Kubernetes API"
+    from_port   = 6443
+    to_port     = 6443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   # Outbound Internet
