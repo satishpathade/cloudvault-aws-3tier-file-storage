@@ -175,3 +175,66 @@ resource "aws_security_group" "rds" {
 
   tags = var.tags
 }
+
+# kubernetes common sg
+
+resource "aws_security_group" "k8s_common" {
+  name        = "${var.project_name}-k8s-common-sg"
+  description = "Kubernetes cluster communication"
+  vpc_id      = var.vpc_id
+
+  # Kubernetes API
+  ingress {
+    description = "Kubernetes API"
+    from_port   = 6443
+    to_port     = 6443
+    protocol    = "tcp"
+    self        = true
+  }
+
+  # etcd
+  ingress {
+    description = "etcd"
+    from_port   = 2379
+    to_port     = 2379
+    protocol    = "tcp"
+    self        = true
+  }
+
+  # Kubelet
+  ingress {
+    description = "Kubelet"
+    from_port   = 10250
+    to_port     = 10250
+    protocol    = "tcp"
+    self        = true
+  }
+
+  # Calico BGP
+  ingress {
+    description = "Calico BGP"
+    from_port   = 179
+    to_port     = 179
+    protocol    = "tcp"
+    self        = true
+  }
+
+  # Calico IP-in-IP
+  ingress {
+    description = "Calico IPIP"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "4"
+    self        = true
+  }
+
+  egress {
+    description = "Outbound"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = var.tags
+}
