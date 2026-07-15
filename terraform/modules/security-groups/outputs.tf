@@ -17,3 +17,7 @@ output "app_sg_id" {
 output "rds_sg_id" {
   value = aws_security_group.rds.id
 }
+
+output "k8s_common_sg_id" {
+  value = aws_security_group.k8s_common.id
+}
