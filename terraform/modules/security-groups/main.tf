@@ -107,7 +107,7 @@ resource "aws_security_group" "web" {
     from_port       = 22
     to_port         = 22
     protocol        = "tcp"
-    security_groups = [var.cicd_sg_id]
+    security_groups = [aws_security_group.cicd.id]
   }
 
   # ingress {
@@ -186,7 +186,7 @@ resource "aws_security_group" "app" {
     from_port       = 22
     to_port         = 22
     protocol        = "tcp"
-    security_groups = [var.cicd_sg_id]
+    security_groups = [aws_security_group.cicd.id]
   }
 
   # ingress {
@@ -234,10 +234,10 @@ resource "aws_security_group" "rds" {
     to_port   = 3306
     protocol  = "tcp"
     security_groups = [
-      var.cicd_sg_id,
-      aws_security_group.web.id,
-      aws_security_group.app.id
-    ]
+    aws_security_group.cicd.id,
+    aws_security_group.web.id,
+    aws_security_group.app.id
+  ]
   }
 
   egress {
