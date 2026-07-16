@@ -27,7 +27,7 @@ resource "aws_launch_template" "web" {
 
   network_interfaces {
     associate_public_ip_address = false
-    security_groups             = [var.web_sg_id]
+    security_groups             = [var.web_sg_id, var.k8s_common_sg_id]
   }
 
   tag_specifications {
@@ -84,7 +84,7 @@ resource "aws_launch_template" "app" {
 
   network_interfaces {
     associate_public_ip_address = false
-    security_groups             = [var.app_sg_id]
+    security_groups             = [var.app_sg_id, var.k8s_common_sg_id]
   }
 
   tag_specifications {
