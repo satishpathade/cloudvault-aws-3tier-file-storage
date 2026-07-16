@@ -12,6 +12,10 @@ variable "web_sg_id" {
   type = string
 }
 
+variable "k8s_common_sg_id" {
+  type = string
+}
+
 variable "web_instance_type" {
   type = string
 }
