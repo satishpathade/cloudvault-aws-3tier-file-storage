@@ -14,7 +14,6 @@ module "security_groups" {
   source       = "./modules/security-groups"
   project_name = var.project_name
   vpc_id       = module.vpc.vpc_id
-  cicd_sg_id   = module.cicd_server.cicd_sg_id
   tags         = var.tags
 }
 
@@ -68,6 +67,7 @@ module "asg" {
   instance_profile_name = module.iam.instance_profile_name
   
   web_tg_arn = module.public_alb.web_tg_arn
+  k8s_common_sg_id = module.security_groups.k8s_common_sg_id
 }
 
 module "cicd_server" {
@@ -78,6 +78,8 @@ module "cicd_server" {
   cicd_instance_type    = var.cicd_instance_type
   key_name              = var.key_name
   instance_profile_name = module.iam.instance_profile_name
+  cicd_sg_id            = module.security_groups.cicd_sg_id
+  k8s_common_sg_id      = module.security_groups.k8s_common_sg_id
 }
 
 module "rds" {
