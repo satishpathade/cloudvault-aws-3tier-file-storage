@@ -21,3 +21,11 @@ variable "key_name" {
 variable "instance_profile_name" {
   type = string
 }
+
+variable "cicd_sg_id" {
+  type = string
+}
+
+variable "k8s_common_sg_id" {
+  type = string
+}
