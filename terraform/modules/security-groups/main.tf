@@ -19,7 +19,9 @@ resource "aws_security_group" "public_alb" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = var.tags
+  tags = {
+    Name = "${var.project_name}-public-alb-sg"
+  }
 }
 
 
@@ -110,22 +112,6 @@ resource "aws_security_group" "web" {
     security_groups = [aws_security_group.cicd.id]
   }
 
-  # ingress {
-  #   description     = "Kubelet API from K8s Master"
-  #   from_port       = 10250
-  #   to_port         = 10250
-  #   protocol        = "tcp"
-  #   security_groups = [var.cicd_sg_id]
-  # }
-
-  # ingress {
-  #   description = "Node to Node"
-  #   from_port   = 0
-  #   to_port     = 0
-  #   protocol    = "-1"
-  #   self        = true
-  # }
-
   ingress {
     description     = "node-to-node communication"
     from_port       = 30080
@@ -134,14 +120,6 @@ resource "aws_security_group" "web" {
     security_groups = [aws_security_group.public_alb.id]
   }
 
-  # BGP port
-  # ingress {
-  #   from_port   = 179
-  #   to_port     = 179
-  #   protocol    = "tcp"
-  #   cidr_blocks = ["10.0.0.0/16"]
-  # }
-
   egress {
     from_port   = 0
     to_port     = 0
@@ -149,7 +127,9 @@ resource "aws_security_group" "web" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = var.tags
+  tags = {
+    Name = "${var.project_name}-web-sg"
+  }
 }
 
 # internal alb sg
@@ -172,7 +152,9 @@ resource "aws_security_group" "internal_alb" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = var.tags
+  tags = {
+    Name = "${var.project_name}-internal-alb-sg"
+  }
 }
 
 # app sg
@@ -189,24 +171,8 @@ resource "aws_security_group" "app" {
     security_groups = [aws_security_group.cicd.id]
   }
 
-  # ingress {
-  #   description     = "Kubelet API from K8s Master"
-  #   from_port       = 10250
-  #   to_port         = 10250
-  #   protocol        = "tcp"
-  #   security_groups = [var.cicd_sg_id]
-  # }
-
-  # ingress {
-  #   description = "Node to Node"
-  #   from_port   = 0
-  #   to_port     = 0
-  #   protocol    = "-1"
-  #   self        = true
-  # }
-
   ingress {
-    description     = "node-to-node communication"
+    description     = "public alb to nodeport"
     from_port       = 30080
     to_port         = 30080
     protocol        = "tcp"
@@ -220,7 +186,9 @@ resource "aws_security_group" "app" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = var.tags
+  tags = {
+    Name = "${var.project_name}-app-sg"
+  }
 }
 
 # RDS sg
@@ -234,10 +202,10 @@ resource "aws_security_group" "rds" {
     to_port   = 3306
     protocol  = "tcp"
     security_groups = [
-    aws_security_group.cicd.id,
-    aws_security_group.web.id,
-    aws_security_group.app.id
-  ]
+      aws_security_group.cicd.id,
+      aws_security_group.web.id,
+      aws_security_group.app.id
+    ]
   }
 
   egress {
@@ -247,7 +215,9 @@ resource "aws_security_group" "rds" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = var.tags
+  tags = {
+    Name = "${var.project_name}-RDS-sg"
+  }
 }
 
 # kubernetes common sg
@@ -262,15 +232,6 @@ resource "aws_security_group" "k8s_common" {
     description = "Kubernetes API"
     from_port   = 6443
     to_port     = 6443
-    protocol    = "tcp"
-    self        = true
-  }
-
-  # etcd
-  ingress {
-    description = "etcd"
-    from_port   = 2379
-    to_port     = 2379
     protocol    = "tcp"
     self        = true
   }
@@ -310,5 +271,7 @@ resource "aws_security_group" "k8s_common" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = var.tags
+  tags = {
+    Name = "${var.project_name}-k8s-common-sg"
+  }
 }
